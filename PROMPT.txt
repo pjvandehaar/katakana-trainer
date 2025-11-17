@@ -1,0 +1,50 @@
+Build me a tiny flashcards webapp for practicing katakana.
+
+It has 3 "pages" (even though they're all in one index.html):
+
+1. The start page.
+   It says "Katakana Trainer!" at the top.
+   Below that, it has a "Start!" button.
+   Below that, it shows the 5 x 10 grid of katakana.  This is reasonably compact, so that it fits on one screen.
+   You may reference the katakana grid at <https://en.wikipedia.org/wiki/Katakana>.
+   Make sure the rows and columns are right.  "*u" must always be the center column, etc.
+   Make "n" be full-width, so that it's clear that it's not one of the vowels.
+   Also add a tiny note about ' and º below the katakana guide.
+
+2. The flashcard page.
+   It shows a flashcard.
+   The top is a word in katakana.  The word is a cognate of an English word.  Eg, "Batman" (but in katakana).
+   Below that is a text box where you type the word in English, with a "Submit!" button.  It also handles ENTER.
+   Below that, de-emphasized, is a button "Show katakana cheat sheet".  It pops up a modal of the katakana.  The modal has an "x" and also handles ESC.
+   When you submit:
+   - If you're correct: you see (above the flashcard) "Correct!" (just for a moment).
+   - If you're wrong: you see "Wrong! ワイン is "wine".  ワ(WA)    イ (I)    ン (N).  Please type it and hit submit to continue."  Make sure to handle every katakana that appears in the list of cognates.
+   Then it shows the next flashcard.  There are 10.
+   Ideally, this would have a cute animation.  Maybe the flashcard zips away to the left, and a new one sweeps in from the right.
+   Ideally, "Correct!"/"Wrong, ..." would fly down from the top of the screen and slap on top of the flashcard at a slight angle.  Imagine a clerk stamping a form.
+
+3. The final score.  "Finished!  You got 6/10 correct!"
+   If you ever used the cheat sheet, it appends "but you used the cheat sheet 3 times!"
+
+
+
+To find cognates:
+ - Check these pages:
+    - https://en.wikipedia.org/wiki/List_of_gairaigo_and_wasei-eigo_terms
+    - https://www.thoughtco.com/most-common-loan-words-in-japanese-2027852
+    - https://www.japanesepod101.com/blog/2021/05/13/english-loanwords-in-japanese/
+ - Make sure they are cognates in English.  Some (eg "pan") are just Spanish.
+ - If they are abbreviated, use the abbreviated form.  Eg, "マイク" = "mic", not "microphone".
+
+
+How:
+ - This will be a static site.  No server-side code.
+ - Please just make index.html and script.js.
+
+
+Bonus after you finish everything else:
+ - Add `node test.js` which imports some functions from script.js and tests them.
+ - Add more styling.  Use a pretty light blue sunny theme.
+ - When grading answers, use some kind of fuzzy logic.  Maybe levenshtein distance?
+ - Use localstorage to track previous sessions and previously-seen words.  Avoid words that the user got correct.  Mix in words that the user got wrong.
+ - At the end, offer a view of all words, whether you've seen them, and whether you got them right.  De-emphasize this in a footer or something.
