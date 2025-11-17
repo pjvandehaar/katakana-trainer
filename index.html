@@ -39,7 +39,7 @@
         }
 
         .guide-note {
-            font-size: 12px;
+            font-size: 14px;
             color: #556;
             margin-top: 8px;
             text-align: center;
@@ -242,13 +242,20 @@
             border: none;
             padding: 6px 8px;
             font-size: 14px;
-            text-decoration: underline;
+            /* text-decoration: underline; */
             cursor: pointer;
         }
 
         .cheat-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cheat-button:disabled {
+            color: #999;
+            background-color: lightgrey;
+            cursor: not-allowed;
+            text-decoration: none;
         }
 
         .start-button {
@@ -395,22 +402,23 @@
     <div class="container">
         <!-- Cheat Sheet Section -->
         <div class="cheat-sheet show" id="cheatSheet">
-            <button class="modal-close" aria-label="Close cheat sheet" onclick="closeCheatSheet()">×</button>
+            <button class="modal-close" aria-label="Close cheat sheet" onclick="closeCheatSheetModal()">×</button>
                 <h1>Katakana Trainer!</h1>
             <div style="text-align:center; margin: 8px 0 12px 0;">
                 <button class="start-button" onclick="startTraining()">Start!</button>
             </div>
             <br>
             <div class="katakana-grid" id="katakanaGrid"></div>
-            <div class="guide-note">Extra notes:
-                <p>A miniature ッ (tsu) after a kana ends it with a glottal stop.  This can be written in English as doubling the next consonant.  Eg: アッカ (akka)</p>
-                <p>Any other miniature replaces/modifies the previous vowel.  Eg: キャ (kya)</p>
-                <p>A ー makes the previous vowel longer.  Eg: アー (aaaaa)</p>
+            <br>
+            <div class="guide-note">More characters:
+                <p><b>miniature ッ</b> (tsu): glottal stop.  To write in English, double the next consonant.  Eg: アッカ (akka)</p>
+                <p><b>any other miniature</b>: replaces/modifies the previous vowel.  Eg: キャ (kya)</p>
+                <p><b>ー</b>: lengthens the previous vowel.  Eg: アー (aaaaa)</p>
             </div>                
         </div>
 
         <!-- Backdrop for modal cheat-sheet -->
-        <div id="modalBackdrop" class="modal-backdrop" onclick="closeCheatSheet()" aria-hidden="true"></div>
+        <div id="modalBackdrop" class="modal-backdrop" onclick="closeCheatSheetModal()" aria-hidden="true"></div>
 
         <!-- Flashcard Section -->
         <div class="flashcard-section" id="flashcardSection">
@@ -426,8 +434,8 @@
                  <button id="submitButton" onclick="submitAnswer()">Submit</button>
             </div>
             <div class="button-group">
-                <button class="cheat-button" onclick="showCheatSheet()">Show katakana cheat sheet</button>
-                <button class="cheat-button toggle-sounds" id="toggleSoundsBtn" onclick="toggleSounds()">Show sounds below katakana</button>
+                <button class="cheat-button" onclick="showCheatSheetModal()">Show katakana cheat sheet</button>
+                <button class="cheat-button" id="showSoundsBtn" onclick="showSounds()">Show sounds below katakana</button>
             </div>
         </div>
 
@@ -436,7 +444,7 @@
             <h2>Finished!</h2>
             <div class="results-score" id="resultsScore">5/10</div>
             <div class="results-message" id="resultsMessage">Great job!</div>
-            <button class="restart-button" onclick="restartTraining()">Try Again</button>
+            <button class="restart-button" onclick="startTraining()">Try Again</button>
         </div>
     </div>
 
