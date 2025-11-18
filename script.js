@@ -330,12 +330,10 @@ function showNextFlashcard(nextCard = true) {
     }
 
     numWrongAnswersOnCurrentWord = 0;
-    renderFlashcardWord();
+    renderFlashcardWord();  // TODO: Animate old card out to the left, new card in from the right
     document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} of ${currentWordList.length}`;
     document.getElementById('answerInput').value = '';
-    document.getElementById('answerInput').disabled = false;
     document.getElementById('answerInput').focus();
-    document.getElementById('submitButton').disabled = false;
     document.getElementById('feedback').classList.add('hidden');
     document.getElementById('feedback').textContent = '';
     document.querySelector('#showSoundsBtn').disabled = false;
@@ -348,12 +346,8 @@ function handleKeyPress(event) {
 }
 
 function submitAnswer() {
-    const inputEl = document.getElementById('answerInput');
-    const submitBtn = document.getElementById('submitButton');
-    const feedbackEl = document.getElementById('feedback');
-
-    const userAnswer = inputEl.value.trim().toLowerCase();
-    const correctAnswer = currentWord.answer.toLowerCase();
+    const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
+    const correctAnswer = getCurrentWord().answer.toLowerCase();
     const isCorrect = userAnswer === correctAnswer || (getCurrentWord().alternates||[]).map(alt => alt.toLowerCase()).includes(userAnswer);
 
     if (numWrongAnswersOnCurrentWord == 0) {  // first attempt
@@ -368,7 +362,7 @@ function submitAnswer() {
         }
     } else {  // second+ attempt
         if (isCorrect) {
-            showNextFlashcard();
+            showFeedback('✓ Correct!', true, { autoAdvance: true });  // autoAdvance triggers showNextFlashcard()
         } else if (!userAnswer) {
             showFeedback(`Please type "${correctAnswer}" to continue.`, false, { showAnswer: true});
         } else {
@@ -389,9 +383,6 @@ function showFeedback(message, isCorrect, opts = {}) {
     msg.textContent = message;
     feedback.appendChild(msg);
 
-    const inputEl = document.getElementById('answerInput');
-    const submitBtn = document.getElementById('submitButton');
-
     if (opts.showAnswer) {
         // show breakdown
         const breakdown = document.createElement('div');
@@ -408,14 +399,9 @@ function showFeedback(message, isCorrect, opts = {}) {
     }
 
     if (opts.autoAdvance) {
-        inputEl.disabled = true;
-        submitBtn.disabled = true;
+        // TODO: In this scenario, instead of inserting a div.feedback, drop a little modal on the middle of the screen.
+        //       That will avoid moving the input box.
         setTimeout(() => {
-            // clear feedback and move to next
-            feedback.classList.add('hidden');
-            inputEl.disabled = false;
-            inputEl.value = '';
-            submitBtn.disabled = false;
             showNextFlashcard();
         }, 500);
     } else if (opts.autoHide) {
@@ -432,26 +418,20 @@ function showCheatSheetModal() {
     // show
     document.getElementById('cheatSheet').classList.add('modal', 'show');
     document.getElementById('modalBackdrop').classList.add('show');
-    // disable input while modal is open
-    document.getElementById('answerInput').disabled = true;
+    document.querySelector('#cheatSheet h1').textContent = 'Katakana Cheat Sheet';
 }
 
 function closeCheatSheetModal() {
     document.getElementById('cheatSheet').classList.remove('modal', 'show');
     document.getElementById('modalBackdrop').classList.remove('show');
-    // re-enable input
-    document.getElementById('answerInput').disabled = false;
     document.getElementById('answerInput').focus();
+    document.querySelector('#cheatSheet h1').textContent = 'Katakana Trainer!';
 }
 
 function showResults() {
     document.getElementById('flashcardSection').classList.remove('show');
     document.getElementById('results').classList.add('show');
-    
-    const resultsScore = document.getElementById('resultsScore');
-    const resultsMessage = document.getElementById('resultsMessage');
-    
-    resultsScore.textContent = `${score}/${currentWordList.length}`;
+    document.getElementById('resultsScore').textContent = `${score}/${currentWordList.length}`;
     
     let message = '';
     if (cheatUseCount && cheatUseCount > 0) {
@@ -469,8 +449,7 @@ function showResults() {
             message = 'Keep practicing! You\'ll get better!';
         }
     }
-    
-    resultsMessage.textContent = message;
+    document.getElementById('resultsMessage').textContent = message;
 }
 
 

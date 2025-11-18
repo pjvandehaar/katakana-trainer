@@ -31,18 +31,12 @@
             width: 100%;
         }
 
+        /* Start/Cheat Sheet View */
         .cheat-sheet {
             display: none;
             animation: fadeIn 0.3s ease-in;
             /* slightly more compact cheat sheet */
             padding: 6px 8px;
-        }
-
-        .guide-note {
-            font-size: 14px;
-            color: #556;
-            margin-top: 8px;
-            text-align: center;
         }
 
         .cheat-sheet.show {
@@ -56,8 +50,25 @@
             font-size: 28px;
         }
 
+        .start-button {
+            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+            color: white;
+            padding: 15px 32px;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .start-button:active {
+            transform: translateY(0);
+        }
+
         .katakana-grid {
-            width: 30em;
+            max-width: 30em;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -83,7 +94,6 @@
             min-height: 48px;
         }
 
-        /* full-width N cell that spans all 5 columns */
         .katakana-cell.full-width {
             grid-column: 1 / -1;
         }
@@ -99,6 +109,39 @@
         .katakana-cell .romaji {
             font-size: 12px;
             color: #555;
+        }
+
+        .guide-note {
+            font-size: 14px;
+            color: #556;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .guide-note p {
+            margin-bottom: 1em;
+        }
+
+
+        /* Flashcard View */
+        .progress {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .flashcard {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: 3px solid #64B5F6;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .kana-breakdown {
@@ -118,21 +161,6 @@
             display: block;
         }
 
-        .flashcard {
-            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-            border: 3px solid #64B5F6;
-            border-radius: 12px;
-            padding: 60px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
         .flashcard-word {
             font-size: 72px;
             font-weight: bold;
@@ -141,13 +169,33 @@
             font-family: 'Noto Sans JP', sans-serif;
             letter-spacing: 8px;
         }
-
-        .progress {
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-            margin-bottom: 10px;
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                background: white;
+                align-items: flex-start;
+            }
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+                padding: 5px;
+            }
+            .progress {
+                margin-bottom: 5px;
+            }
+            .flashcard {
+                padding: 10px 10px;
+                margin-bottom: 10px;
+                min-height: 100px;
+            }
+            .flashcard .flashcard-word {
+                font-size: 32px;
+                letter-spacing: 4px;
+                margin-bottom: 0;
+            }
         }
+
+
 
         .input-section {
             display: flex;
@@ -256,23 +304,6 @@
             background-color: lightgrey;
             cursor: not-allowed;
             text-decoration: none;
-        }
-
-        .start-button {
-            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
-            color: white;
-            padding: 15px 32px;
-            font-size: 18px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .start-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .start-button:active {
-            transform: translateY(0);
         }
 
         /* Modal/backdrop styles for cheat sheet when opened from the quiz */
@@ -410,7 +441,8 @@
             <br>
             <div class="katakana-grid" id="katakanaGrid"></div>
             <br>
-            <div class="guide-note">More characters:
+            <div class="guide-note">
+                <p>More characters:</p>
                 <p><b>miniature ッ</b> (tsu): glottal stop.  To write in English, double the next consonant.  Eg: アッカ (akka)</p>
                 <p><b>any other miniature</b>: replaces/modifies the previous vowel.  Eg: キャ (kya)</p>
                 <p><b>ー</b>: lengthens the previous vowel.  Eg: アー (aaaaa)</p>
