@@ -60,7 +60,7 @@ const cognateWords = [
     { katakana: 'リラックス', answer: 'relax' },
     { katakana: 'ジャンプ', answer: 'jump' },
     { katakana: 'キス', answer: 'kiss' },
-    { katakana: 'メイク', answer: 'makeup' },
+    { katakana: 'メイク', answer: 'make', alternates: ['makeup'] },
     { katakana: 'パーティー', answer: 'party' },
     { katakana: 'ギャンブル', answer: 'gamble' },
     { katakana: 'アップル', answer: 'apple' },
@@ -92,7 +92,7 @@ const cognateWords = [
     { katakana: 'カナダ', answer: 'canada' },
     { katakana: 'スペイン', answer: 'spain' },
     { katakana: 'フランス', answer: 'france' },
-    { katakana: 'トンカツ', answer: 'tonkatsu', alternates: ['cutlet'] },
+    // { katakana: 'トンカツ', answer: 'tonkatsu', alternates: ['cutlet'] },
     { katakana: 'スキー', answer: 'ski' },
     { katakana: 'スケート', answer: 'skate' },
     { katakana: 'ヨット', answer: 'yacht' },
@@ -106,7 +106,7 @@ const cognateWords = [
     { katakana: 'ジーンズ', answer: 'jeans' },
     { katakana: 'スニーカー', answer: 'sneaker' },
     { katakana: 'ブレザー', answer: 'blazer' },
-    { katakana: 'ハンカチ', answer: 'handkerchief' },
+    { katakana: 'ハンカチ', answer: 'handkerchief', alternates: ['hankie', 'hankierchief'] },
     { katakana: 'タクシー', answer: 'taxi' },
     { katakana: 'トラック', answer: 'truck' },
     { katakana: 'スクール', answer: 'school' },
@@ -353,31 +353,31 @@ function submitAnswer() {
     if (numWrongAnswersOnCurrentWord == 0) {  // first attempt
         if (isCorrect) {
             score++;
-            showFeedback('✓ Correct!', true, { autoAdvance: true });  // autoAdvance triggers showNextFlashcard()
+            showCorrectAndNextCard()
         } else if (!userAnswer) {
-            showFeedback('Please enter an answer', false);
+            showFeedback('Please enter an answer');
         } else {
             numWrongAnswersOnCurrentWord++;
-            showFeedback(`Wrong! ${getCurrentWord().katakana} is "${getCurrentWord().answer}".`, false, { showAnswer: true });
+            showFeedback(`Wrong! ${getCurrentWord().katakana} is "${getCurrentWord().answer}".`, { showAnswer: true });
         }
     } else {  // second+ attempt
         if (isCorrect) {
-            showFeedback('✓ Correct!', true, { autoAdvance: true });  // autoAdvance triggers showNextFlashcard()
+            showCorrectAndNextCard()
         } else if (!userAnswer) {
-            showFeedback(`Please type "${correctAnswer}" to continue.`, false, { showAnswer: true});
+            showFeedback(`Please type "${correctAnswer}" to continue.`, { showAnswer: true});
         } else {
             numWrongAnswersOnCurrentWord++;
-            showFeedback(`Still not correct (${numWrongAnswersOnCurrentWord}nd time) — please type "${correctAnswer}" and hit Submit to continue.`, false, { showAnswer: true });
+            showFeedback(`Still not correct (${numWrongAnswersOnCurrentWord}nd time) — please type "${correctAnswer}" and hit Submit to continue.`, { showAnswer: true });
         }
     }
 }
 
-function showFeedback(message, isCorrect, opts = {}) {
+function showFeedback(message, opts = {}) {
     const feedback = document.getElementById('feedback');
     feedback.innerHTML = '';
     feedback.classList.remove('hidden');
     feedback.classList.remove('correct', 'incorrect');
-    feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+    feedback.classList.add(opts.isCorrect ? 'correct' : 'incorrect');
 
     const msg = document.createElement('div');
     msg.textContent = message;
@@ -397,18 +397,30 @@ function showFeedback(message, isCorrect, opts = {}) {
         instr.textContent = `Type "${getCurrentWord().answer}" and press Submit to continue.`;
         feedback.appendChild(instr);
     }
+}
 
-    if (opts.autoAdvance) {
-        // TODO: In this scenario, instead of inserting a div.feedback, drop a little modal on the middle of the screen.
-        //       That will avoid moving the input box.
-        setTimeout(() => {
-            showNextFlashcard();
-        }, 500);
-    } else if (opts.autoHide) {
-        setTimeout(() => {
-            feedback.classList.add('hidden');
-        }, 1000);
-    }
+function showCorrectAndNextCard() {
+    showPopup();
+    setTimeout(() => {
+        hidePopup();
+        showNextFlashcard();
+    }, 500);
+}
+
+function showPopup() {
+    document.getElementById('popup').classList.remove('animate-out');
+    document.getElementById('popup').classList.add('animate-in');  // animates 0.2s
+}
+function hidePopup() {
+    document.getElementById('popup').classList.add('animate-out');  // animates 0.1s
+    setTimeout(() => {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('popup').classList.remove('animate-in');
+        document.getElementById('popup').classList.remove('animate-out');
+    }, 110);  // after fade-out finishes
+    setTimeout(() => {
+        document.getElementById('popup').style.display = 'block';
+    }, 300);  // reset display after everything
 }
 
 
