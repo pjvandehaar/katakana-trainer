@@ -5,9 +5,9 @@ const cognateWords = [
     { katakana: 'サッカー', answer: 'soccer' },
     { katakana: 'テニス', answer: 'tennis' },
     { katakana: 'ゴルフ', answer: 'golf' },
-    { katakana: 'アイスクリーム', answer: 'ice cream' },
+    { katakana: 'アイスクリーム', answer: 'ice cream', alternates:['icecream'] },
     { katakana: 'バナナ', answer: 'banana' },
-    { katakana: 'オレンジ', answer: 'orange' },
+    { katakana: 'オレンジ', answer: 'orange', alternates:['orangey'] },
     { katakana: 'トマト', answer: 'tomato' },
     { katakana: 'コンピューター', answer: 'computer' },
     { katakana: 'インターネット', answer: 'internet' },
@@ -18,7 +18,7 @@ const cognateWords = [
     { katakana: 'ビール', answer: 'beer' },
     { katakana: 'ワイン', answer: 'wine' },
     { katakana: 'ジュース', answer: 'juice' },
-    { katakana: 'コーヒー', answer: 'coffee' },
+    // { katakana: 'コーヒー', answer: 'coffee' },
     { katakana: 'ティー', answer: 'tea' },
     { katakana: 'ミルク', answer: 'milk' },
     // { katakana: 'ハムサンド', answer: 'ham sandwich' },
@@ -37,7 +37,7 @@ const cognateWords = [
     { katakana: 'ウィンドウ', answer: 'window' },
     { katakana: 'グラス', answer: 'glass', alternates:['grass'] },
     { katakana: 'スプーン', answer: 'spoon' },
-    { katakana: 'フォーク', answer: 'fork', alternates: ['fog'] },
+    { katakana: 'フォーク', answer: 'fork', alternates: ['fog','fuck'] },
     { katakana: 'ナイフ', answer: 'knife' },
     { katakana: 'バス', answer: 'bus' },
     { katakana: 'バイク', answer: 'bike' },
@@ -47,7 +47,7 @@ const cognateWords = [
     { katakana: 'テーブル', answer: 'table' },
     { katakana: 'サービス', answer: 'service' },
     { katakana: 'サイズ', answer: 'size' },
-    { katakana: 'シャツ', answer: 'shirt' },
+    { katakana: 'シャツ', answer: 'shirt', alternates:['shirts', 'shot', 'shots'] },
     { katakana: 'ネクタイ', answer: 'necktie' },
     { katakana: 'サンダル', answer: 'sandal' },
     { katakana: 'サングラス', answer: 'sunglass', alternates:['sunglasses'] },
@@ -61,7 +61,7 @@ const cognateWords = [
     { katakana: 'ジャンプ', answer: 'jump' },
     { katakana: 'キス', answer: 'kiss' },
     { katakana: 'メイク', answer: 'make', alternates: ['makeup'] },
-    { katakana: 'パーティー', answer: 'party' },
+    { katakana: 'パーティー', answer: 'party', alternates:['pate'] },
     { katakana: 'ギャンブル', answer: 'gamble' },
     { katakana: 'アップル', answer: 'apple' },
     { katakana: 'スターバックス', answer: 'starbucks' },
@@ -82,7 +82,7 @@ const cognateWords = [
     { katakana: 'バター', answer: 'butter', alternates:['batter'] },
     { katakana: 'バーゲン', answer: 'bargain' },
     { katakana: 'ドラマ', answer: 'drama' },
-    { katakana: 'フライ', answer: 'fry' },
+    { katakana: 'フライ', answer: 'fry', alternates:['fly'] },
     { katakana: 'フロント', answer: 'front' },
     { katakana: 'ハンドル', answer: 'handle' },
     { katakana: 'イメージ', answer: 'image' },
@@ -101,7 +101,7 @@ const cognateWords = [
     { katakana: 'ボウリング', answer: 'bowling' },
     // { katakana: 'ハンバーグ', answer: 'hamburg' },
     { katakana: 'フライドポテト', answer: 'fried potato', alternates: ['french fries', 'fries', 'chips', 'friedpotato'] },
-    { katakana: 'アイスコーヒー', answer: 'ice coffee', alternates: ['icecoffee', 'iced coffee'] },
+    // { katakana: 'アイスコーヒー', answer: 'ice coffee', alternates: ['icecoffee', 'iced coffee'] },
     { katakana: 'ホットケーキ', answer: 'hotcake', alternates: ['pancake'] },
     { katakana: 'ジーンズ', answer: 'jeans' },
     { katakana: 'スニーカー', answer: 'sneaker' },
@@ -121,6 +121,7 @@ const cognateWords = [
     { katakana: 'コンディショナー', answer: 'conditioner' },
     { katakana: 'タオル', answer: 'towel' },
     { katakana: 'シート', answer: 'seat', alternates: ['sheet','shit'] },
+    { katakana: 'ピッチ', answer: 'pitch' },
     { katakana: 'クッション', answer: 'cushion' },
     { katakana: 'カーテン', answer: 'curtain' },
     { katakana: 'ベッド', answer: 'bed' },
@@ -128,7 +129,7 @@ const cognateWords = [
     { katakana: 'チェア', answer: 'chair' },
     { katakana: 'テーブル', answer: 'table' },
     { katakana: 'キャビネット', answer: 'cabinet' },
-    { katakana: 'ドア', answer: 'door' },
+    { katakana: 'ドア', answer: 'door', alternates:['doer'] },
     { katakana: 'ガラス', answer: 'glass' },
     { katakana: 'プレート', answer: 'plate' },
     { katakana: 'ボウル', answer: 'bowl' },
@@ -306,42 +307,33 @@ function randomSubset(count, arr) {
 
 function showSounds() {
     document.querySelector('#showSoundsBtn').disabled = true;
-    renderFlashcardWord(true);
-}
-
-
-function renderFlashcardWord(shouldShowSounds) {
-    // TODO: Only use this function for shouldShowSounds
-    if (currentQuestionIndex >= currentWordList.length) return;
-    if (shouldShowSounds) {
-        document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKatakanaRomajiRubyHTML(getCurrentWord().katakana));
-    } else {
-        document.querySelectorAll('.flashcard-word').forEach(el => el.textContent = getCurrentWord().katakana);
-    }
+    document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKatakanaRomajiRubyHTML(getCurrentWord().katakana));
 }
 
 function showNextFlashcard(nextCard = true) {
-    if (nextCard) {
+    if (!nextCard) {  // we are rendering the first word
+        document.querySelectorAll('.flashcard-word').forEach(el => el.textContent = getCurrentWord().katakana);
+    } else {  // we are rendering the 2nd+ word
         currentQuestionIndex++;
+
+        if (currentQuestionIndex >= currentWordList.length) {
+            showResults();
+            return;
+        }
+
+        const currentFlashcard = document.querySelector('.slide-nowhere');
+        const nextFlashcard = document.querySelector('.slide-left');
+
+        currentFlashcard.classList.add('slide-right');
+        currentFlashcard.classList.remove('slide-nowhere');
+        setTimeout(() => {
+            currentFlashcard.classList.add('slide-left');
+            currentFlashcard.classList.remove('slide-right');
+        }, 250);
+        nextFlashcard.querySelector('.flashcard-word').textContent = getCurrentWord().katakana;
+        nextFlashcard.classList.add('slide-nowhere');
+        nextFlashcard.classList.remove('slide-left');
     }
-
-    if (currentQuestionIndex >= currentWordList.length) {
-        showResults();
-        return;
-    }
-
-    const currentFlashcard = document.querySelector('.slide-nowhere');
-    const nextFlashcard = document.querySelector('.slide-left');
-
-    currentFlashcard.classList.add('slide-right');
-    currentFlashcard.classList.remove('slide-nowhere');
-    setTimeout(() => {
-        currentFlashcard.classList.add('slide-left');
-        currentFlashcard.classList.remove('slide-right');
-    }, 250);
-    nextFlashcard.querySelector('.flashcard-word').textContent = getCurrentWord().katakana;
-    nextFlashcard.classList.add('slide-nowhere');
-    nextFlashcard.classList.remove('slide-left');
 
     numWrongAnswersOnCurrentWord = 0;
     document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} of ${currentWordList.length}`;
