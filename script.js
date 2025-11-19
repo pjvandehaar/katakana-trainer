@@ -57,7 +57,7 @@ const cognateWords = [
     { katakana: 'ノック', answer: 'knock' },
     { katakana: 'キャンセル', answer: 'cancel' },
     { katakana: 'ジョギング', answer: 'jogging' },
-    { katakana: 'リラックス', answer: 'relax', alternates; ['lilacs'] },
+    { katakana: 'リラックス', answer: 'relax', alternates: ['lilacs'] },
     { katakana: 'ジャンプ', answer: 'jump' },
     { katakana: 'キス', answer: 'kiss' },
     { katakana: 'メイク', answer: 'make', alternates: ['makeup'] },
