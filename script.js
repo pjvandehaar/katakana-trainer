@@ -37,7 +37,7 @@ const cognateWords = [
     { katakana: 'ウィンドウ', answer: 'window' },
     { katakana: 'グラス', answer: 'glass' },
     { katakana: 'スプーン', answer: 'spoon' },
-    { katakana: 'フォーク', answer: 'fork' },
+    { katakana: 'フォーク', answer: 'fork', alternates: ['fog'] },
     { katakana: 'ナイフ', answer: 'knife' },
     { katakana: 'バス', answer: 'bus' },
     { katakana: 'バイク', answer: 'bike' },
@@ -95,12 +95,12 @@ const cognateWords = [
     // { katakana: 'トンカツ', answer: 'tonkatsu', alternates: ['cutlet'] },
     { katakana: 'スキー', answer: 'ski' },
     { katakana: 'スケート', answer: 'skate' },
-    { katakana: 'ヨット', answer: 'yacht' },
+    // { katakana: 'ヨット', answer: 'yacht' },
     { katakana: 'パーティー', answer: 'party' },
     { katakana: 'バスケット', answer: 'basketball', alternates: ['basket'] },
     { katakana: 'ボウリング', answer: 'bowling' },
     // { katakana: 'ハンバーグ', answer: 'hamburg' },
-    { katakana: 'フライドポテト', answer: 'french fries', alternates: ['fries', 'chips'] },
+    { katakana: 'フライドポテト', answer: 'fried potato', alternates: ['french fries', 'fries', 'chips', 'friedpotato'] },
     { katakana: 'アイスコーヒー', answer: 'iced coffee', alternates: ['ice coffee'] },
     { katakana: 'ホットケーキ', answer: 'pancake', alternates: ['hotcake'] },
     { katakana: 'ジーンズ', answer: 'jeans' },
@@ -311,11 +311,12 @@ function showSounds() {
 
 
 function renderFlashcardWord(shouldShowSounds) {
+    // TODO: Only use this function for shouldShowSounds
     if (currentQuestionIndex >= currentWordList.length) return;
     if (shouldShowSounds) {
-        document.getElementById('flashcardWord').innerHTML = getKatakanaRomajiRubyHTML(getCurrentWord().katakana);
+        document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKatakanaRomajiRubyHTML(getCurrentWord().katakana));
     } else {
-        document.getElementById('flashcardWord').textContent = getCurrentWord().katakana;
+        document.querySelectorAll('.flashcard-word').forEach(el => el.textContent = getCurrentWord().katakana);
     }
 }
 
@@ -329,8 +330,20 @@ function showNextFlashcard(nextCard = true) {
         return;
     }
 
+    const currentFlashcard = document.querySelector('.slide-nowhere');
+    const nextFlashcard = document.querySelector('.slide-left');
+
+    currentFlashcard.classList.add('slide-right');
+    currentFlashcard.classList.remove('slide-nowhere');
+    setTimeout(() => {
+        currentFlashcard.classList.add('slide-left');
+        currentFlashcard.classList.remove('slide-right');
+    }, 250);
+    nextFlashcard.querySelector('.flashcard-word').textContent = getCurrentWord().katakana;
+    nextFlashcard.classList.add('slide-nowhere');
+    nextFlashcard.classList.remove('slide-left');
+
     numWrongAnswersOnCurrentWord = 0;
-    renderFlashcardWord();  // TODO: Animate old card out to the left, new card in from the right
     document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} of ${currentWordList.length}`;
     document.getElementById('answerInput').value = '';
     document.getElementById('answerInput').focus();

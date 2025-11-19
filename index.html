@@ -149,6 +149,7 @@
         }
         .flashcard.slide-left {
             transform: translateX(-100vw);
+            transition: none !important;  /* instantly to left slide */
         }
 
         .kana-breakdown {
@@ -176,33 +177,7 @@
             font-family: 'Noto Sans JP', sans-serif;
             letter-spacing: 8px;
         }
-        @media (max-width: 768px) {
-            body {
-                padding: 0;
-                background: white;
-                align-items: flex-start;
-            }
-            .container {
-                border-radius: 0;
-                box-shadow: none;
-                padding: 5px;
-            }
-            .progress {
-                margin-bottom: 5px;
-            }
-            .flashcard {
-                padding: 10px 10px;
-                margin-bottom: 10px;
-                min-height: 100px;
-            }
-            .flashcard .flashcard-word {
-                font-size: 32px;
-                letter-spacing: 4px;
-                margin-bottom: 0;
-            }
-        }
-
-
+ 
 
         .input-section {
             display: flex;
@@ -371,7 +346,7 @@
         #popup {
             position: fixed;
             top: -100px;  /* Start off-screen */
-            left: 50%;
+            left: 50vw;
             transform: translateX(-50%) translateY(-50%) rotate(-7deg);
             background-color: #4CAF50;
             color: white;
@@ -382,15 +357,17 @@
             font-weight: bold;
             pointer-events: none;
             white-space: nowrap;
-            transition: top 0.15s cubic-bezier(.74,.38,.38,1.18), opacity 0.1s ease-in, transform 0.1s ease-in;
+            /* transition: top 0.15s cubic-bezier(.74,.38,.38,1.18), transform 0.1s; */
+            transition: none;
         }
         #popup.animate-in {
-            top: 50%;  /* Move to center of screen */
-            opacity: 1;
+            transition: top 0.15s cubic-bezier(.74,.38,.38,1.18);
+            top: 30vh;  /* Move down into screen */
         }
         #popup.animate-out {
-            opacity: 0;
-            transform: scale(0)
+            transition: left 0.3s linear;
+            left: 150vw;  /* Move off to the right */
+            top: 30vh;
         }
 
         .results {
@@ -459,6 +436,37 @@
                 opacity: 1;
             }
         }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                background: white;
+                align-items: flex-start;
+            }
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+                padding: 5px;
+            }
+            .progress {
+                margin-bottom: 5px;
+            }
+            .flashcard {
+                padding: 10px 10px;
+                margin-bottom: 10px;
+                min-height: 100px;
+            }
+            .flashcard .flashcard-word {
+                font-size: 32px;
+                letter-spacing: 4px;
+                margin-bottom: 0;
+            }
+            #popup {
+                font-size: 32px;
+            }
+            #popup.animate-in {
+                top: 10%;
+        }
     </style>
 </head>
 <body>
@@ -485,12 +493,15 @@
         <div id="modalBackdrop" class="modal-backdrop" onclick="closeCheatSheetModal()" aria-hidden="true"></div>
 
         <!-- Flashcard Section -->
-        <div class="flashcard-section" id="flashcardSection">
+        <div class="flashcard-section" id="flashcardSection" style="position:relative">
             <div class="progress">
                 <span id="progressText">Question 1 of 10</span>
             </div>
-            <div class="flashcard">
-                <div class="flashcard-word" id="flashcardWord">バットマン</div>
+            <div class="flashcard slide-nowhere" style="position:absolute; width:100%">
+                <div class="flashcard-word">blank</div>
+            </div>
+            <div class="flashcard slide-left">
+                <div class="flashcard-word">blank</div>
             </div>
             <div class="feedback hidden" id="feedback"></div>
             <div class="input-section">
