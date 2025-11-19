@@ -88,7 +88,7 @@ const cognateWords = [
     { katakana: 'イメージ', answer: 'image' },
     { katakana: 'アメリカ', answer: 'america' },
     { katakana: 'イタリア', answer: 'italy', alternates: ['italia'] },
-    { katakana: 'オランダ', answer: 'holland', alternates: ['netherlands', 'the netherlands'] },
+    { katakana: 'ホランダ', answer: 'holland', alternates: ['netherlands', 'the netherlands'] },
     { katakana: 'カナダ', answer: 'canada' },
     { katakana: 'スペイン', answer: 'spain' },
     { katakana: 'フランス', answer: 'france' },
