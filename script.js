@@ -57,7 +57,7 @@ const cognateWords = [
     { katakana: 'ノック', answer: 'knock' },
     { katakana: 'キャンセル', answer: 'cancel' },
     { katakana: 'ジョギング', answer: 'jogging' },
-    { katakana: 'リラックス', answer: 'relax' },
+    { katakana: 'リラックス', answer: 'relax', alternates; ['lilacs'] },
     { katakana: 'ジャンプ', answer: 'jump' },
     { katakana: 'キス', answer: 'kiss' },
     { katakana: 'メイク', answer: 'make', alternates: ['makeup'] },
@@ -427,13 +427,8 @@ function showPopup() {
 function hidePopup() {
     document.getElementById('popup').classList.add('animate-out');  // animates 0.1s
     setTimeout(() => {
-        document.getElementById('popup').style.display = 'none';
-        document.getElementById('popup').classList.remove('animate-in');
-        document.getElementById('popup').classList.remove('animate-out');
-    }, 110);  // after fade-out finishes
-    setTimeout(() => {
-        document.getElementById('popup').style.display = 'block';
-    }, 300);  // reset display after everything
+        document.getElementById('popup').classList.remove('animate-in', 'animate-out');
+    }, 110);  // after slide-right finishes
 }
 
 
