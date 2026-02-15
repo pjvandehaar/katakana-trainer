@@ -19,6 +19,8 @@ const VOCABULARY = [
     { katakana: 'ハンバーガー', answer: 'hamburger' },
     { katakana: 'ピザ', answer: 'pizza' },
     { katakana: 'チーズ', answer: 'cheese' },
+    { katakana: 'ベーコン', answer: 'bacon' },
+    { katakana: 'ベーコンチーズバーガー', answer: 'bacon cheese burger' },
     { katakana: 'ビール', answer: 'beer' },
     { katakana: 'ワイン', answer: 'wine', alternates: ['whine'] },
     { katakana: 'ジュース', answer: 'juice' },
@@ -67,6 +69,7 @@ const VOCABULARY = [
     { katakana: 'パーティー', answer: 'party', alternates: ['pate'] },
     { katakana: 'ギャンブル', answer: 'gamble' },
     { katakana: 'アップル', answer: 'apple' },
+    { katakana: 'ウォーターメロン', answer: 'watermelon' },
     { katakana: 'スターバックス', answer: 'starbucks' },
     { katakana: 'ケンタッキー', answer: 'kentucky', alternates: ['kfc'] },
     { katakana: 'マクドナルド', answer: 'mcdonalds', alternates: ['mcdonald'] },
@@ -138,6 +141,7 @@ const VOCABULARY = [
     { katakana: 'エスケープ', answer: 'escape' },
     { katakana: 'トレーニング', answer: 'training' },
     { katakana: 'メモリー', answer: 'memory' },
+    { katakana: 'マイ バット イズ ソー イッチー', answer: 'My butt is so itchy' },
     { katakana: 'アーカイブ', answer: 'archive' },
     { katakana: 'リユース', answer: 'reuse' },
     { katakana: 'リサイクルショップ', answer: 'recycling shop', alternates: ['recycle shop'] },
@@ -435,7 +439,13 @@ class UI {
     handleKanaToggle(e) {
         this.useHiragana = e.target.checked;
         this.renderKatakanaGrid();
-        this.updateFlashcard(true); // Refresh current flashcard if quiz is active
+        // Only update flashcard if quiz is active
+        if (this.elements.flashcardSection.classList.contains('show')) {
+            this.updateFlashcard(true);
+        }
+        const title = this.useHiragana ? 'Hiragana Trainer' : 'Katakana Trainer';
+        this.elements.cheatSheet.querySelector('h1').textContent = title + '!';
+        document.title = title;
     }
 
     renderKatakanaGrid() {
