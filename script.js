@@ -15,12 +15,12 @@ const VOCABULARY = [
     { katakana: 'トマト', answer: 'tomato' },
     { katakana: 'コンピューター', answer: 'computer' },
     { katakana: 'インターネット', answer: 'internet' },
-    { katakana: 'メール', answer: 'mail' },
+    { katakana: 'メール', answer: 'mail', alternates:['mare'] },
     { katakana: 'ハンバーガー', answer: 'hamburger' },
     { katakana: 'ピザ', answer: 'pizza' },
     { katakana: 'チーズ', answer: 'cheese' },
     { katakana: 'ビール', answer: 'beer' },
-    { katakana: 'ワイン', answer: 'wine' },
+    { katakana: 'ワイン', answer: 'wine', alternates: ['whine'] },
     { katakana: 'ジュース', answer: 'juice' },
     { katakana: 'ティー', answer: 'tea' },
     { katakana: 'ミルク', answer: 'milk' },
@@ -38,12 +38,13 @@ const VOCABULARY = [
     { katakana: 'ドア', answer: 'door' },
     { katakana: 'ウィンドウ', answer: 'window' },
     { katakana: 'グラス', answer: 'glass', alternates: ['grass'] },
+    { katakana: 'ガラス', answer: 'glass', alternates: ['grass'] },
     { katakana: 'スプーン', answer: 'spoon' },
     { katakana: 'フォーク', answer: 'fork', alternates: ['fog', 'fuck'] },
     { katakana: 'ナイフ', answer: 'knife' },
-    { katakana: 'バス', answer: 'bus', alternates: ['boss'] },
+    { katakana: 'バス', answer: 'bus', alternates: ['boss', 'bath'] },
     { katakana: 'バイク', answer: 'bike' },
-    { katakana: 'ウェブサイト', answer: 'website' },
+    { katakana: 'ウェブサイト', answer: 'website', alternates: ['web site'] },
     { katakana: 'ホテル', answer: 'hotel' },
     { katakana: 'レストラン', answer: 'restaurant' },
     { katakana: 'テーブル', answer: 'table' },
@@ -54,7 +55,7 @@ const VOCABULARY = [
     { katakana: 'サンダル', answer: 'sandal' },
     { katakana: 'サングラス', answer: 'sunglass', alternates: ['sunglasses'] },
     { katakana: 'テスト', answer: 'test' },
-    { katakana: 'サラリーマン', answer: 'salaryman' },
+    { katakana: 'サラリーマン', answer: 'salaryman', alternates: ['salary man'] },
     { katakana: 'ドライブ', answer: 'drive' },
     { katakana: 'ノック', answer: 'knock' },
     { katakana: 'キャンセル', answer: 'cancel' },
@@ -67,8 +68,8 @@ const VOCABULARY = [
     { katakana: 'ギャンブル', answer: 'gamble' },
     { katakana: 'アップル', answer: 'apple' },
     { katakana: 'スターバックス', answer: 'starbucks' },
-    { katakana: 'ケンタッキー', answer: 'kentucky' },
-    { katakana: 'マクドナルド', answer: 'mcdonalds' },
+    { katakana: 'ケンタッキー', answer: 'kentucky', alternates: ['kfc'] },
+    { katakana: 'マクドナルド', answer: 'mcdonalds', alternates: ['mcdonald'] },
     { katakana: 'タイプ', answer: 'type' },
     { katakana: 'エンジン', answer: 'engine' },
     { katakana: 'カレンダー', answer: 'calendar' },
@@ -80,11 +81,11 @@ const VOCABULARY = [
     { katakana: 'ストーリー', answer: 'story' },
     { katakana: 'スマート', answer: 'smart' },
     { katakana: 'アイドル', answer: 'idol' },
-    { katakana: 'アニメ', answer: 'animation' },
+    { katakana: 'アニメ', answer: 'anime', alternates: ['animation'] },
     { katakana: 'バター', answer: 'butter', alternates: ['batter'] },
     { katakana: 'バーゲン', answer: 'bargain' },
     { katakana: 'ドラマ', answer: 'drama' },
-    { katakana: 'フライ', answer: 'fry', alternates: ['fly'] },
+    { katakana: 'フライ', answer: 'fry', alternates: ['fly', 'fried'] },
     { katakana: 'フロント', answer: 'front' },
     { katakana: 'ハンドル', answer: 'handle' },
     { katakana: 'イメージ', answer: 'image' },
@@ -106,7 +107,7 @@ const VOCABULARY = [
     { katakana: 'ブレザー', answer: 'blazer', alternates: ['brazer', 'braiser'] },
     { katakana: 'ハンカチ', answer: 'handkerchief', alternates: ['hankie', 'hankerchief'] },
     { katakana: 'タクシー', answer: 'taxi' },
-    { katakana: 'トラック', answer: 'truck' },
+    { katakana: 'トラック', answer: 'truck', alternates:['track'] },
     { katakana: 'スクール', answer: 'school' },
     { katakana: 'プリンター', answer: 'printer' },
     { katakana: 'スキャナー', answer: 'scanner' },
@@ -118,7 +119,7 @@ const VOCABULARY = [
     { katakana: 'コンディショナー', answer: 'conditioner' },
     { katakana: 'タオル', answer: 'towel' },
     { katakana: 'シート', answer: 'seat', alternates: ['sheet', 'shit'] },
-    { katakana: 'ピッチ', answer: 'pitch' },
+    { katakana: 'ピッチ', answer: 'pitch', alternates: ['peach'] },
     { katakana: 'クッション', answer: 'cushion' },
     { katakana: 'カーテン', answer: 'curtain', alternates: ['carton'] },
     { katakana: 'ベッド', answer: 'bed' },
@@ -127,9 +128,8 @@ const VOCABULARY = [
     { katakana: 'テーブル', answer: 'table' },
     { katakana: 'キャビネット', answer: 'cabinet' },
     { katakana: 'ドア', answer: 'door', alternates: ['doer'] },
-    { katakana: 'ガラス', answer: 'glass' },
     { katakana: 'プレート', answer: 'plate' },
-    { katakana: 'ボウル', answer: 'bowl' },
+    { katakana: 'ボウル', answer: 'bowl', alternates: ['ball'] },
     { katakana: 'カップ', answer: 'cup', alternates: ['cop'] },
     { katakana: 'ティーンエージャー', answer: 'teenager' },
     { katakana: 'スケルトン', answer: 'skeleton' },
@@ -139,6 +139,10 @@ const VOCABULARY = [
     { katakana: 'トレーニング', answer: 'training' },
     { katakana: 'メモリー', answer: 'memory' },
     { katakana: 'アーカイブ', answer: 'archive' },
+    { katakana: 'リユース', answer: 'reuse' },
+    { katakana: 'リサイクルショップ', answer: 'recycling shop', alternates: ['recycle shop'] },
+    { katakana: 'ブランド', answer: 'brand', alternates: ['bland'] },
+    { katakana: 'フリーマーケット', answer: 'flea market', alternates: ['free market'] },
 ];
 
 // Katakana grid (used for both visual grid and romaji lookup)
@@ -168,6 +172,53 @@ const KATAKANA_DATA = [
     [{ kana: 'ッ', romaji: "'" }, { kana: 'ー', romaji: '-' }, null, null, null]
 ];
 
+// Hiragana grid (same structure as katakana, for display in grid)
+const HIRAGANA_DATA = [
+    [{ kana: 'あ', romaji: 'A' }, { kana: 'い', romaji: 'I' }, { kana: 'う', romaji: 'U' }, { kana: 'え', romaji: 'E' }, { kana: 'お', romaji: 'O' }],
+    [{ kana: 'か', romaji: 'KA' }, { kana: 'き', romaji: 'KI' }, { kana: 'く', romaji: 'KU' }, { kana: 'け', romaji: 'KE' }, { kana: 'こ', romaji: 'KO' }],
+    [{ kana: 'さ', romaji: 'SA' }, { kana: 'し', romaji: 'SHI' }, { kana: 'す', romaji: 'SU' }, { kana: 'せ', romaji: 'SE' }, { kana: 'そ', romaji: 'SO' }],
+    [{ kana: 'た', romaji: 'TA' }, { kana: 'ち', romaji: 'CHI' }, { kana: 'つ', romaji: 'TSU' }, { kana: 'て', romaji: 'TE' }, { kana: 'と', romaji: 'TO' }],
+    [{ kana: 'な', romaji: 'NA' }, { kana: 'に', romaji: 'NI' }, { kana: 'ぬ', romaji: 'NU' }, { kana: 'ね', romaji: 'NE' }, { kana: 'の', romaji: 'NO' }],
+    [{ kana: 'は', romaji: 'HA' }, { kana: 'ひ', romaji: 'HI' }, { kana: 'ふ', romaji: 'FU' }, { kana: 'へ', romaji: 'HE' }, { kana: 'ほ', romaji: 'HO' }],
+    [{ kana: 'ま', romaji: 'MA' }, { kana: 'み', romaji: 'MI' }, { kana: 'む', romaji: 'MU' }, { kana: 'め', romaji: 'ME' }, { kana: 'も', romaji: 'MO' }],
+    [{ kana: 'や', romaji: 'YA' }, null, { kana: 'ゆ', romaji: 'YU' }, null, { kana: 'よ', romaji: 'YO' }],
+    [{ kana: 'ら', romaji: 'RA' }, { kana: 'り', romaji: 'RI' }, { kana: 'る', romaji: 'RU' }, { kana: 'れ', romaji: 'RE' }, { kana: 'ろ', romaji: 'RO' }],
+    [{ kana: 'わ', romaji: 'WA' }, null, null, null, { kana: 'を', romaji: 'WO' }],
+    [{ kana: 'ん', romaji: 'N' }],
+
+    [null, null, null, null, null],
+    [{ kana: 'が', romaji: 'GA' }, { kana: 'ぎ', romaji: 'GI' }, { kana: 'ぐ', romaji: 'GU' }, { kana: 'げ', romaji: 'GE' }, { kana: 'ご', romaji: 'GO' }],
+    [{ kana: 'ざ', romaji: 'ZA' }, { kana: 'じ', romaji: 'JI' }, { kana: 'ず', romaji: 'ZU' }, { kana: 'ぜ', romaji: 'ZE' }, { kana: 'ぞ', romaji: 'ZO' }],
+    [{ kana: 'だ', romaji: 'DA' }, { kana: 'ぢ', romaji: 'DI' }, { kana: 'づ', romaji: 'DU' }, { kana: 'で', romaji: 'DE' }, { kana: 'ど', romaji: 'DO' }],
+    [{ kana: 'ば', romaji: 'BA' }, { kana: 'び', romaji: 'BI' }, { kana: 'ぶ', romaji: 'BU' }, { kana: 'べ', romaji: 'BE' }, { kana: 'ぼ', romaji: 'BO' }],
+    [{ kana: 'ぱ', romaji: 'PA' }, { kana: 'ぴ', romaji: 'PI' }, { kana: 'ぷ', romaji: 'PU' }, { kana: 'ぺ', romaji: 'PE' }, { kana: 'ぽ', romaji: 'PO' }],
+
+    [null, null, null, null, null],
+    [{ kana: 'ゃ', romaji: 'ya' }, null, { kana: 'ゅ', romaji: 'yu' }, null, { kana: 'ょ', romaji: 'yo' }],
+    [{ kana: 'ぁ', romaji: 'a' }, { kana: 'ぃ', romaji: 'i' }, { kana: 'ぅ', romaji: 'u' }, { kana: 'ぇ', romaji: 'e' }, { kana: 'ぉ', romaji: 'o' }],
+    [{ kana: 'っ', romaji: "'" }, { kana: 'ー', romaji: '-' }, null, null, null]
+];
+
+// Create a katakana -> hiragana mapping
+const KATAKANA_TO_HIRAGANA = {};
+for (let i = 0; i < KATAKANA_DATA.length; i++) {
+    const katakanaRow = KATAKANA_DATA[i];
+    const hiraganaRow = HIRAGANA_DATA[i];
+    for (let j = 0; j < katakanaRow.length; j++) {
+        if (katakanaRow[j] && hiraganaRow[j]) {
+            KATAKANA_TO_HIRAGANA[katakanaRow[j].kana] = hiraganaRow[j].kana;
+        }
+    }
+}
+
+/**
+ * Convert a katakana string to hiragana
+ */
+function katakanaToHiragana(katakanaStr) {
+    if (!katakanaStr) return '';
+    return katakanaStr.split('').map(char => KATAKANA_TO_HIRAGANA[char] || char).join('');
+}
+
 const ROMAJI_LOOKUP = {};
 KATAKANA_DATA.forEach(row => {
     row.forEach(cell => {
@@ -176,6 +227,15 @@ KATAKANA_DATA.forEach(row => {
         }
     });
 });
+// Add hiragana to romaji lookup as well
+HIRAGANA_DATA.forEach(row => {
+    row.forEach(cell => {
+        if (cell && cell.kana && cell.romaji) {
+            ROMAJI_LOOKUP[cell.kana] = cell.romaji;
+        }
+    });
+});
+
 
 
 // ==========================================
@@ -322,6 +382,7 @@ class UI {
     constructor(game) {
         /** @type {Game} */
         this.game = game;
+        this.useHiragana = false; // Track whether to use hiragana
         this.elements = {
             cheatSheet: document.getElementById('cheat-sheet'),
             flashcardSection: document.getElementById('flashcard-section'),
@@ -335,7 +396,8 @@ class UI {
             resultsMessage: document.getElementById('results-message'),
             restartBtn: document.getElementById('restart-btn'),
             modalBackdrop: document.getElementById('modal-backdrop'),
-            showSoundsBtn: document.getElementById('show-sounds-btn')
+            showSoundsBtn: document.getElementById('show-sounds-btn'),
+            kanaToggle: document.getElementById('kana-toggle-checkbox')
         };
     }
 
@@ -353,6 +415,9 @@ class UI {
         document.getElementById('close-cheat-sheet-btn').addEventListener('click', () => this.closeCheatSheetModal());
         document.getElementById('modal-backdrop').addEventListener('click', () => this.closeCheatSheetModal());
         this.elements.showSoundsBtn.addEventListener('click', () => this.showSounds());
+        
+        // Kana toggle
+        this.elements.kanaToggle.addEventListener('change', (e) => this.handleKanaToggle(e));
 
         // Input
         this.elements.answerInput.addEventListener('keypress', (e) => {
@@ -367,10 +432,17 @@ class UI {
         });
     }
 
+    handleKanaToggle(e) {
+        this.useHiragana = e.target.checked;
+        this.renderKatakanaGrid();
+        this.updateFlashcard(true); // Refresh current flashcard if quiz is active
+    }
+
     renderKatakanaGrid() {
         const grid = this.elements.katakanaGrid;
         grid.innerHTML = '';
-        KATAKANA_DATA.forEach((row, idx) => {
+        const kanaData = this.useHiragana ? HIRAGANA_DATA : KATAKANA_DATA;
+        kanaData.forEach((row, idx) => {
             // Remove small kana row and long vowel mark row
             if (idx >= 17) return;
 
@@ -409,9 +481,10 @@ class UI {
 
     updateFlashcard(isFirstCard = false) {
         const word = this.game.getCurrentWord();
+        const displayText = this.useHiragana ? katakanaToHiragana(word.katakana) : word.katakana;
 
         if (isFirstCard) {
-            document.querySelectorAll('.flashcard-word').forEach(el => el.textContent = word.katakana);
+            document.querySelectorAll('.flashcard-word').forEach(el => el.textContent = displayText);
         } else {
             const currentFlashcard = document.querySelector('.slide-nowhere');
             const nextFlashcard = document.querySelector('.slide-left');
@@ -422,7 +495,7 @@ class UI {
                 currentFlashcard.classList.add('slide-left');
                 currentFlashcard.classList.remove('slide-right');
             }, 250);
-            nextFlashcard.querySelector('.flashcard-word').textContent = word.katakana;
+            nextFlashcard.querySelector('.flashcard-word').textContent = displayText;
             nextFlashcard.classList.add('slide-nowhere');
             nextFlashcard.classList.remove('slide-left');
         }
@@ -437,7 +510,8 @@ class UI {
 
     showSounds() {
         this.elements.showSoundsBtn.disabled = true;
-        document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKatakanaRomajiRubyHTML(this.game.getCurrentWord().katakana));
+        const displayText = this.useHiragana ? katakanaToHiragana(this.game.getCurrentWord().katakana) : this.game.getCurrentWord().katakana;
+        document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKatakanaRomajiRubyHTML(displayText));
     }
 
     submitAnswer() {
@@ -481,7 +555,8 @@ class UI {
         if (opts.showAnswer) {
             const breakdown = document.createElement('div');
             breakdown.className = 'kana-breakdown';
-            breakdown.textContent = getKatakanaRomajiBreakdownString(this.game.getCurrentWord().katakana);
+            const displayText = this.useHiragana ? katakanaToHiragana(this.game.getCurrentWord().katakana) : this.game.getCurrentWord().katakana;
+            breakdown.textContent = getKatakanaRomajiBreakdownString(displayText);
             feedback.appendChild(breakdown);
 
             const instr = document.createElement('div');
@@ -545,14 +620,14 @@ class UI {
         this.game.useCheat();
         this.elements.cheatSheet.classList.add('modal', 'show');
         this.elements.modalBackdrop.classList.add('show');
-        this.elements.cheatSheet.querySelector('h1').textContent = 'Katakana Cheat Sheet';
+        this.elements.cheatSheet.querySelector('h1').textContent = this.useHiragana ? 'Hiragana Cheat Sheet' : 'Katakana Cheat Sheet';
     }
 
     closeCheatSheetModal() {
         this.elements.cheatSheet.classList.remove('modal', 'show');
         this.elements.modalBackdrop.classList.remove('show');
         this.elements.answerInput.focus();
-        this.elements.cheatSheet.querySelector('h1').textContent = 'Katakana Trainer!';
+        this.elements.cheatSheet.querySelector('h1').textContent = this.useHiragana ? 'Hiragana Trainer!' : 'Katakana Trainer!';
     }
 }
 
