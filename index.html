@@ -7,9 +7,11 @@
     <title>Katakana Trainer</title>
     <style>
         * {
+            box-sizing: border-box;
+        }
+        div {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
@@ -68,7 +70,7 @@
             transform: translateY(0);
         }
 
-        .katakana-grid {
+        .kana-grid {
             max-width: 30em;
             margin: 0 auto;
             display: grid;
@@ -80,7 +82,7 @@
             align-items: center;
         }
 
-        .katakana-cell {
+        .kana-cell {
             /* flatter, less button-like; compact spacing to reduce overall grid height */
             background: #f6fbff;
             padding: 8px 6px;
@@ -95,11 +97,11 @@
             min-height: 48px;
         }
 
-        .katakana-cell.full-width {
+        .kana-cell.full-width {
             grid-column: 1 / -1;
         }
 
-        .katakana-cell .kana {
+        .kana-cell .kana {
             font-size: 18px;
             font-weight: 700;
             color: #1a1a1a;
@@ -107,7 +109,7 @@
             line-height: 1;
         }
 
-        .katakana-cell .romaji {
+        .kana-cell .romaji {
             font-size: 12px;
             color: #555;
         }
@@ -535,17 +537,16 @@
                 <button class="start-button" id="start-btn">Start!</button>
             </div>
             <br>
-            <div class="katakana-grid" id="katakana-grid"></div>
+            <div class="kana-grid" id="kana-grid"></div>
             <br>
             <div class="guide-note">
                 <p>More characters:</p>
+                <p><b>ー</b>: lengthens the previous vowel. Eg: アー (aaaaa)</p>
                 <p><b>miniature ッ</b> (tsu): glottal stop. To write in English, double the next consonant. Eg: アッカ
                     (akka)</p>
-                <p><b>any other miniature</b>: replaces/modifies the previous vowel. Eg: キャ (kya)</p>
-                <p><b>ー</b>: lengthens the previous vowel. Eg: アー (aaaaa)</p>
+                <p><b>any other miniature</b>: replaces the previous vowel. Eg: キャ (kya), フォ (fo), トゥ (tu), ウィ (wi).  Exception: drop any y after シ (shi) and チ (chi). Eg: シャ (sha, not shya), チュ (chu, not chyu)</p>
                 <hr>
-                <p>Remembering the r- katakana: ラ (ra) looks like rabbit, リ (ri) looks like river, ル (ru) looks like roots, レ (re) could be a reptile, ロ (ro) is in robot (ロボット).</p>
-                <p>See guide at <a href="https://www.tofugu.com/japanese/learn-katakana/">tofugu</a></p>
+                <p>References: <a href="https://www.tofugu.com/japanese/learn-katakana/">tofugu katakana</a>, <a href="https://www.tofugu.com/japanese/learn-hiragana/">tofugu hiragana</a></p>
             </div>
         </div>
 
@@ -569,9 +570,9 @@
                 <button id="submit-btn">Submit</button>
             </div>
             <div class="button-group">
-                <button class="cheat-button" id="show-cheat-sheet-btn">Show katakana cheat sheet</button>
+                <button class="cheat-button" id="show-cheat-sheet-btn">Show kana cheat sheet</button>
                 <button class="cheat-button" id="show-sounds-btn">Show sounds below
-                    katakana</button>
+                    kana</button>
             </div>
         </div>
 

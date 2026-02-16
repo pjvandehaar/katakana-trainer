@@ -66,7 +66,7 @@ const VOCABULARY = [
     { katakana: 'ジャンプ', answer: 'jump' },
     { katakana: 'キス', answer: 'kiss' },
     { katakana: 'メイク', answer: 'make', alternates: ['makeup'] },
-    { katakana: 'パーティー', answer: 'party', alternates: ['pate'] },
+    { katakana: 'パーティー', answer: 'party', alternates: ['pate', 'potty'] },
     { katakana: 'ギャンブル', answer: 'gamble' },
     { katakana: 'アップル', answer: 'apple' },
     { katakana: 'ウォーターメロン', answer: 'watermelon' },
@@ -147,98 +147,57 @@ const VOCABULARY = [
     { katakana: 'リサイクルショップ', answer: 'recycling shop', alternates: ['recycle shop'] },
     { katakana: 'ブランド', answer: 'brand', alternates: ['bland'] },
     { katakana: 'フリーマーケット', answer: 'flea market', alternates: ['free market'] },
+    { katakana: 'ロープウェー', answer: 'ropeway' }
 ];
 
-// Katakana grid (used for both visual grid and romaji lookup)
-const KATAKANA_DATA = [
-    [{ kana: 'ア', romaji: 'A' }, { kana: 'イ', romaji: 'I' }, { kana: 'ウ', romaji: 'U' }, { kana: 'エ', romaji: 'E' }, { kana: 'オ', romaji: 'O' }],
-    [{ kana: 'カ', romaji: 'KA' }, { kana: 'キ', romaji: 'KI' }, { kana: 'ク', romaji: 'KU' }, { kana: 'ケ', romaji: 'KE' }, { kana: 'コ', romaji: 'KO' }],
-    [{ kana: 'サ', romaji: 'SA' }, { kana: 'シ', romaji: 'SHI' }, { kana: 'ス', romaji: 'SU' }, { kana: 'セ', romaji: 'SE' }, { kana: 'ソ', romaji: 'SO' }],
-    [{ kana: 'タ', romaji: 'TA' }, { kana: 'チ', romaji: 'CHI' }, { kana: 'ツ', romaji: 'TSU' }, { kana: 'テ', romaji: 'TE' }, { kana: 'ト', romaji: 'TO' }],
-    [{ kana: 'ナ', romaji: 'NA' }, { kana: 'ニ', romaji: 'NI' }, { kana: 'ヌ', romaji: 'NU' }, { kana: 'ネ', romaji: 'NE' }, { kana: 'ノ', romaji: 'NO' }],
-    [{ kana: 'ハ', romaji: 'HA' }, { kana: 'ヒ', romaji: 'HI' }, { kana: 'フ', romaji: 'FU' }, { kana: 'ヘ', romaji: 'HE' }, { kana: 'ホ', romaji: 'HO' }],
-    [{ kana: 'マ', romaji: 'MA' }, { kana: 'ミ', romaji: 'MI' }, { kana: 'ム', romaji: 'MU' }, { kana: 'メ', romaji: 'ME' }, { kana: 'モ', romaji: 'MO' }],
-    [{ kana: 'ヤ', romaji: 'YA' }, null, { kana: 'ユ', romaji: 'YU' }, null, { kana: 'ヨ', romaji: 'YO' }],
-    [{ kana: 'ラ', romaji: 'RA' }, { kana: 'リ', romaji: 'RI' }, { kana: 'ル', romaji: 'RU' }, { kana: 'レ', romaji: 'RE' }, { kana: 'ロ', romaji: 'RO' }],
-    [{ kana: 'ワ', romaji: 'WA' }, null, null, null, { kana: 'ヲ', romaji: 'WO' }],
-    [{ kana: 'ン', romaji: 'N' }],
+const CHARACTERS = ([
+    ["A","あ","ア"],["I","い","イ"],["U","う","ウ"],["E","え","エ"],["O","お","オ"],
+    ["KA","か","カ"],["KI","き","キ"],["KU","く","ク"],["KE","け","ケ"],["KO","こ","コ"],
+    ["SA","さ","サ"],["SHI","し","シ"],["SU","す","ス"],["SE","せ","セ"],["SO","そ","ソ"],
+    ["TA","た","タ"],["CHI","ち","チ"],["TSU","つ","ツ"],["TE","て","テ"],["TO","と","ト"],
+    ["NA","な","ナ"],["NI","に","ニ"],["NU","ぬ","ヌ"],["NE","ね","ネ"],["NO","の","ノ"],
+    ["HA","は","ハ"],["HI","ひ","ヒ"],["FU","ふ","フ"],["HE","へ","ヘ"],["HO","ほ","ホ"],
+    ["MA","ま","マ"],["MI","み","ミ"],["MU","む","ム"],["ME","め","メ"],["MO","も","モ"],
+    ["YA","や","ヤ"],["YU","ゆ","ユ"],["YO","よ","ヨ"],
+    ["RA","ら","ラ"],["RI","り","リ"],["RU","る","ル"],["RE","れ","レ"],["RO","ろ","ロ"],
+    ["WA","わ","ワ"],["WO","を","ヲ"],
+    ["N","ん","ン"],
+    ["GA","が","ガ"],["GI","ぎ","ギ"],["GU","ぐ","グ"],["GE","げ","ゲ"],["GO","ご","ゴ"],
+    ["ZA","ざ","ザ"],["JI","じ","ジ"],["ZU","ず","ズ"],["ZE","ぜ","ゼ"],["ZO","ぞ","ゾ"],
+    ["DA","だ","ダ"],["DI","ぢ","ヂ"],["DU","づ","ヅ"],["DE","で","デ"],["DO","ど","ド"],
+    ["BA","ば","バ"],["BI","び","ビ"],["BU","ぶ","ブ"],["BE","べ","ベ"],["BO","ぼ","ボ"],
+    ["PA","ぱ","パ"],["PI","ぴ","ピ"],["PU","ぷ","プ"],["PE","ぺ","ペ"],["PO","ぽ","ポ"],
+    ["ya","ゃ","ャ"],["yu","ゅ","ュ"],["yo","ょ","ョ"],
+    ["a","ぁ","ァ"],["i","ぃ","ィ"],["u","ぅ","ゥ"],["e","ぇ","ェ"],["o","ぉ","ォ"],
+    ["'","っ","ッ"],
+    ["-","ー","ー"],
+]).map(arr => ({romaji: arr[0], hiragana: arr[1], katakana: arr[2]}));
 
-    [null, null, null, null, null],
-    [{ kana: 'ガ', romaji: 'GA' }, { kana: 'ギ', romaji: 'GI' }, { kana: 'グ', romaji: 'GU' }, { kana: 'ゲ', romaji: 'GE' }, { kana: 'ゴ', romaji: 'GO' }],
-    [{ kana: 'ザ', romaji: 'ZA' }, { kana: 'ジ', romaji: 'JI' }, { kana: 'ズ', romaji: 'ZU' }, { kana: 'ゼ', romaji: 'ZE' }, { kana: 'ゾ', romaji: 'ZO' }],
-    [{ kana: 'ダ', romaji: 'DA' }, { kana: 'ヂ', romaji: 'DI' }, { kana: 'ヅ', romaji: 'DU' }, { kana: 'デ', romaji: 'DE' }, { kana: 'ド', romaji: 'DO' }],
-    [{ kana: 'バ', romaji: 'BA' }, { kana: 'ビ', romaji: 'BI' }, { kana: 'ブ', romaji: 'BU' }, { kana: 'ベ', romaji: 'BE' }, { kana: 'ボ', romaji: 'BO' }],
-    [{ kana: 'パ', romaji: 'PA' }, { kana: 'ピ', romaji: 'PI' }, { kana: 'プ', romaji: 'PU' }, { kana: 'ペ', romaji: 'PE' }, { kana: 'ポ', romaji: 'PO' }],
+const ROMAJI_LOOKUP = Object.fromEntries(CHARACTERS.flatMap(d => [[d.katakana, d.romaji], [d.hiragana, d.romaji]]));
+const KATAKANA_LOOKUP = Object.fromEntries(CHARACTERS.flatMap(d => [[d.romaji, d.katakana], [d.hiragana, d.katakana]]));
+const HIRAGANA_LOOKUP = Object.fromEntries(CHARACTERS.flatMap(d => [[d.romaji, d.hiragana], [d.katakana, d.hiragana]]));
 
-    [null, null, null, null, null],
-    [{ kana: 'ャ', romaji: 'ya' }, null, { kana: 'ュ', romaji: 'yu' }, null, { kana: 'ョ', romaji: 'yo' }],
-    [{ kana: 'ァ', romaji: 'a' }, { kana: 'ィ', romaji: 'i' }, { kana: 'ゥ', romaji: 'u' }, { kana: 'ェ', romaji: 'e' }, { kana: 'ォ', romaji: 'o' }],
-    [{ kana: 'ッ', romaji: "'" }, { kana: 'ー', romaji: '-' }, null, null, null]
+const KATAKANA_GRID_STR = [
+    "アイウエオ",
+    "カキクケコ",
+    "サシスセソ",
+    "タチツテト",
+    "ナニヌネノ",
+    "ハヒフヘホ",
+    "マミムメモ",
+    "ヤ ユ ヨ",
+    "ラリルレロ",
+    "ワ   ヲ",
+    "ン",
+    "",
+    "ガギグゲゴ",
+    "ザジズゼゾ",
+    "ダヂヅデド",
+    "バビブベボ",
+    "パピプペポ"
 ];
-
-// Hiragana grid (same structure as katakana, for display in grid)
-const HIRAGANA_DATA = [
-    [{ kana: 'あ', romaji: 'A' }, { kana: 'い', romaji: 'I' }, { kana: 'う', romaji: 'U' }, { kana: 'え', romaji: 'E' }, { kana: 'お', romaji: 'O' }],
-    [{ kana: 'か', romaji: 'KA' }, { kana: 'き', romaji: 'KI' }, { kana: 'く', romaji: 'KU' }, { kana: 'け', romaji: 'KE' }, { kana: 'こ', romaji: 'KO' }],
-    [{ kana: 'さ', romaji: 'SA' }, { kana: 'し', romaji: 'SHI' }, { kana: 'す', romaji: 'SU' }, { kana: 'せ', romaji: 'SE' }, { kana: 'そ', romaji: 'SO' }],
-    [{ kana: 'た', romaji: 'TA' }, { kana: 'ち', romaji: 'CHI' }, { kana: 'つ', romaji: 'TSU' }, { kana: 'て', romaji: 'TE' }, { kana: 'と', romaji: 'TO' }],
-    [{ kana: 'な', romaji: 'NA' }, { kana: 'に', romaji: 'NI' }, { kana: 'ぬ', romaji: 'NU' }, { kana: 'ね', romaji: 'NE' }, { kana: 'の', romaji: 'NO' }],
-    [{ kana: 'は', romaji: 'HA' }, { kana: 'ひ', romaji: 'HI' }, { kana: 'ふ', romaji: 'FU' }, { kana: 'へ', romaji: 'HE' }, { kana: 'ほ', romaji: 'HO' }],
-    [{ kana: 'ま', romaji: 'MA' }, { kana: 'み', romaji: 'MI' }, { kana: 'む', romaji: 'MU' }, { kana: 'め', romaji: 'ME' }, { kana: 'も', romaji: 'MO' }],
-    [{ kana: 'や', romaji: 'YA' }, null, { kana: 'ゆ', romaji: 'YU' }, null, { kana: 'よ', romaji: 'YO' }],
-    [{ kana: 'ら', romaji: 'RA' }, { kana: 'り', romaji: 'RI' }, { kana: 'る', romaji: 'RU' }, { kana: 'れ', romaji: 'RE' }, { kana: 'ろ', romaji: 'RO' }],
-    [{ kana: 'わ', romaji: 'WA' }, null, null, null, { kana: 'を', romaji: 'WO' }],
-    [{ kana: 'ん', romaji: 'N' }],
-
-    [null, null, null, null, null],
-    [{ kana: 'が', romaji: 'GA' }, { kana: 'ぎ', romaji: 'GI' }, { kana: 'ぐ', romaji: 'GU' }, { kana: 'げ', romaji: 'GE' }, { kana: 'ご', romaji: 'GO' }],
-    [{ kana: 'ざ', romaji: 'ZA' }, { kana: 'じ', romaji: 'JI' }, { kana: 'ず', romaji: 'ZU' }, { kana: 'ぜ', romaji: 'ZE' }, { kana: 'ぞ', romaji: 'ZO' }],
-    [{ kana: 'だ', romaji: 'DA' }, { kana: 'ぢ', romaji: 'DI' }, { kana: 'づ', romaji: 'DU' }, { kana: 'で', romaji: 'DE' }, { kana: 'ど', romaji: 'DO' }],
-    [{ kana: 'ば', romaji: 'BA' }, { kana: 'び', romaji: 'BI' }, { kana: 'ぶ', romaji: 'BU' }, { kana: 'べ', romaji: 'BE' }, { kana: 'ぼ', romaji: 'BO' }],
-    [{ kana: 'ぱ', romaji: 'PA' }, { kana: 'ぴ', romaji: 'PI' }, { kana: 'ぷ', romaji: 'PU' }, { kana: 'ぺ', romaji: 'PE' }, { kana: 'ぽ', romaji: 'PO' }],
-
-    [null, null, null, null, null],
-    [{ kana: 'ゃ', romaji: 'ya' }, null, { kana: 'ゅ', romaji: 'yu' }, null, { kana: 'ょ', romaji: 'yo' }],
-    [{ kana: 'ぁ', romaji: 'a' }, { kana: 'ぃ', romaji: 'i' }, { kana: 'ぅ', romaji: 'u' }, { kana: 'ぇ', romaji: 'e' }, { kana: 'ぉ', romaji: 'o' }],
-    [{ kana: 'っ', romaji: "'" }, { kana: 'ー', romaji: '-' }, null, null, null]
-];
-
-// Create a katakana -> hiragana mapping
-const KATAKANA_TO_HIRAGANA = {};
-for (let i = 0; i < KATAKANA_DATA.length; i++) {
-    const katakanaRow = KATAKANA_DATA[i];
-    const hiraganaRow = HIRAGANA_DATA[i];
-    for (let j = 0; j < katakanaRow.length; j++) {
-        if (katakanaRow[j] && hiraganaRow[j]) {
-            KATAKANA_TO_HIRAGANA[katakanaRow[j].kana] = hiraganaRow[j].kana;
-        }
-    }
-}
-
-/**
- * Convert a katakana string to hiragana
- */
-function katakanaToHiragana(katakanaStr) {
-    if (!katakanaStr) return '';
-    return katakanaStr.split('').map(char => KATAKANA_TO_HIRAGANA[char] || char).join('');
-}
-
-const ROMAJI_LOOKUP = {};
-KATAKANA_DATA.forEach(row => {
-    row.forEach(cell => {
-        if (cell && cell.kana && cell.romaji) {
-            ROMAJI_LOOKUP[cell.kana] = cell.romaji;
-        }
-    });
-});
-// Add hiragana to romaji lookup as well
-HIRAGANA_DATA.forEach(row => {
-    row.forEach(cell => {
-        if (cell && cell.kana && cell.romaji) {
-            ROMAJI_LOOKUP[cell.kana] = cell.romaji;
-        }
-    });
-});
+const KATAKANA_GRID = KATAKANA_GRID_STR.map(row => row ? row.split('').map(kana => ((kana===' ')? null : {kana: kana, romaji:ROMAJI_LOOKUP[kana]})) : [null, null, null, null, null]);
+const HIRAGANA_GRID = KATAKANA_GRID.map(row => row.map(cell => (cell===null) ? null : {kana:HIRAGANA_LOOKUP[cell.kana], romaji:cell.romaji}))
 
 
 
@@ -247,30 +206,49 @@ HIRAGANA_DATA.forEach(row => {
 // ==========================================
 
 /**
- * Return a breakdown string for a katakana word, e.g. "ワ(WA)    イ(I)    ン(N)"
- * Handles digraphs like キャ → KYA
+ * Convert a katakana/romaji string to hiragana
  */
-function getKatakanaRomajiBreakdownString(katakanaStr) {
-    const pairs = getKatakanaRomajiPairs(katakanaStr);
+function toHiragana(str) {
+    if (!str) return '';
+        
+    return str.split('').map((char, i, arr) => {
+        // Convert "ー" to last vowel
+        if (char === 'ー' && i > 0) {
+            const prevRomaji = ROMAJI_LOOKUP[arr[i - 1]];
+            if (prevRomaji) {
+                return HIRAGANA_LOOKUP[prevRomaji.at(-1).toUpperCase()] || char;
+            }
+        }
+        return HIRAGANA_LOOKUP[char] || char;
+    }).join('');
+}
+
+/**
+ * Return a breakdown string for a kana word, e.g. "ワ(WA)    イ(I)    ン(N)"
+ * Handles digraphs like キャ → KYA
+ * Handles katakana and hiragana
+ */
+function getKanaRomajiBreakdownString(kanaStr) {
+    const pairs = getKanaRomajiPairs(kanaStr);
     const parts = pairs.map(pair => `${pair.kana}(${pair.romaji})`);
     return parts.join('    ');
 }
 
-function getKatakanaRomajiRubyHTML(katakanaStr) {
-    const pairs = getKatakanaRomajiPairs(katakanaStr);
+function getKanaRomajiRubyHTML(kanaStr) {
+    const pairs = getKanaRomajiPairs(kanaStr);
     const parts = pairs.map(pair => `<ruby style="ruby-position: under;">${pair.kana}<rt>${pair.romaji}</rt></ruby>`);
     return parts.join('');
 }
 
-/* Return [{ kana, romaji }, ...] pairs for a katakana string, with digraphs handled */
-function getKatakanaRomajiPairs(katakanaStr) {
+/* Return [{ kana, romaji }, ...] pairs for a kana string, with digraphs handled */
+function getKanaRomajiPairs(kanaStr) {
     const pairs = [];
-    if (!katakanaStr) return pairs;
+    if (!kanaStr) return pairs;
     const smallCombiners = ['ャ', 'ュ', 'ョ', 'ィ', 'ェ', 'ゥ', 'ァ', 'ォ'];  // not 'ッ'
-    for (let i = 0; i < katakanaStr.length; i++) {
-        const kana = katakanaStr[i];
+    for (let i = 0; i < kanaStr.length; i++) {
+        const kana = kanaStr[i];
         const romaji = ROMAJI_LOOKUP[kana] || '';
-        const nextKana = katakanaStr[i + 1];
+        const nextKana = kanaStr[i + 1];
         // Check if this is a digraph (consonant + small kana)
         if (nextKana && (smallCombiners.includes(nextKana))) {
             const baseRom = ROMAJI_LOOKUP[kana] || '';
@@ -298,6 +276,24 @@ function getRandomSubset(count, arr) {
     return selected;
 }
 
+function getWordsFromURL() {
+    if (typeof window !== 'undefined') {
+        const wordsParam = new window.URLSearchParams(window.location.search).get('words');
+        if (wordsParam) {
+            console.log(`getWordsFromURL()::wordsParam = ${wordsParam}`);
+            const indexes = wordsParam.split(',').map(s => parseInt(s));
+            console.log(`getWordsFromURL()::indexes = ${JSON.stringify(indexes)}`)
+            if (indexes.every(idx => !isNaN(idx))) {
+                const words = indexes.map(idx => VOCABULARY.at(idx));
+                console.log(`getWordsFromURL()::words = ${JSON.stringify(words)}`)
+                if (words.length && words.every(w => typeof w?.katakana === 'string')) {
+                    return words;
+                }
+            }
+        }
+    }
+}
+
 
 // ==========================================
 // GAME LOGIC
@@ -317,13 +313,13 @@ class Game {
     }
 
     /**
-     * Resets game state and selects new words.
+     * Resets game state and selects new words.  Runs at initialization.
      */
     reset() {
         this.cheatUseCount = 0;
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.currentWordList = getRandomSubset(10, this.vocabulary);
+        this.currentWordList = getWordsFromURL() || getRandomSubset(10, this.vocabulary);
         this.numWrongAnswersOnCurrentWord = 0;
     }
 
@@ -339,11 +335,10 @@ class Game {
      * @returns {boolean}
      */
     checkAnswer(userAnswer) {
+        const clean = s => s.toLowerCase().replace(/ /g, '');
         const currentWord = this.getCurrentWord();
-        const correctAnswer = currentWord.answer.toLowerCase();
-        const alternates = (currentWord.alternates || []).map(alt => alt.toLowerCase());
-
-        return userAnswer === correctAnswer || alternates.includes(userAnswer);
+        const correctAnswers = [currentWord.answer, ...(currentWord.alternates||[])].map(clean)
+        return correctAnswers.includes(clean(userAnswer));
     }
 
     recordCorrect() {
@@ -391,7 +386,7 @@ class UI {
             cheatSheet: document.getElementById('cheat-sheet'),
             flashcardSection: document.getElementById('flashcard-section'),
             results: document.getElementById('results'),
-            katakanaGrid: document.getElementById('katakana-grid'),
+            kanaGrid: document.getElementById('kana-grid'),
             progressText: document.getElementById('progress-text'),
             answerInput: document.getElementById('answer-input'),
             feedback: document.getElementById('feedback'),
@@ -406,7 +401,7 @@ class UI {
     }
 
     setup() {
-        this.renderKatakanaGrid();
+        this.renderKanaGrid();
         this.setupEventListeners();
     }
 
@@ -438,7 +433,7 @@ class UI {
 
     handleKanaToggle(e) {
         this.useHiragana = e.target.checked;
-        this.renderKatakanaGrid();
+        this.renderKanaGrid();
         // Only update flashcard if quiz is active
         if (this.elements.flashcardSection.classList.contains('show')) {
             this.updateFlashcard(true);
@@ -448,10 +443,10 @@ class UI {
         document.title = title;
     }
 
-    renderKatakanaGrid() {
-        const grid = this.elements.katakanaGrid;
+    renderKanaGrid() {
+        const grid = this.elements.kanaGrid;
         grid.innerHTML = '';
-        const kanaData = this.useHiragana ? HIRAGANA_DATA : KATAKANA_DATA;
+        const kanaData = this.useHiragana ? HIRAGANA_GRID : KATAKANA_GRID;
         kanaData.forEach((row, idx) => {
             // Remove small kana row and long vowel mark row
             if (idx >= 17) return;
@@ -459,14 +454,14 @@ class UI {
             if (row.length === 1) {
                 // render a single cell spanning all columns (used for ン row)
                 const cell = document.createElement('div');
-                cell.className = 'katakana-cell full-width';
+                cell.className = 'kana-cell full-width';
                 cell.style.gridColumn = '1 / -1';
                 cell.innerHTML = `<div class="kana">${row[0].kana}</div><div class="romaji">${row[0].romaji}</div>`;
                 grid.appendChild(cell);
             } else {
                 row.forEach(char => {
                     const cell = document.createElement('div');
-                    cell.className = 'katakana-cell';
+                    cell.className = 'kana-cell';
                     if (char === null) {
                         cell.style.visibility = 'hidden';
                         cell.innerHTML = '';
@@ -491,7 +486,7 @@ class UI {
 
     updateFlashcard(isFirstCard = false) {
         const word = this.game.getCurrentWord();
-        const displayText = this.useHiragana ? katakanaToHiragana(word.katakana) : word.katakana;
+        const displayText = this.useHiragana ? toHiragana(word.katakana) : word.katakana;
 
         if (isFirstCard) {
             document.querySelectorAll('.flashcard-word').forEach(el => el.textContent = displayText);
@@ -520,8 +515,8 @@ class UI {
 
     showSounds() {
         this.elements.showSoundsBtn.disabled = true;
-        const displayText = this.useHiragana ? katakanaToHiragana(this.game.getCurrentWord().katakana) : this.game.getCurrentWord().katakana;
-        document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKatakanaRomajiRubyHTML(displayText));
+        const displayText = this.useHiragana ? toHiragana(this.game.getCurrentWord().katakana) : this.game.getCurrentWord().katakana;
+        document.querySelectorAll('.flashcard-word').forEach(el => el.innerHTML = getKanaRomajiRubyHTML(displayText));
     }
 
     submitAnswer() {
@@ -565,8 +560,8 @@ class UI {
         if (opts.showAnswer) {
             const breakdown = document.createElement('div');
             breakdown.className = 'kana-breakdown';
-            const displayText = this.useHiragana ? katakanaToHiragana(this.game.getCurrentWord().katakana) : this.game.getCurrentWord().katakana;
-            breakdown.textContent = getKatakanaRomajiBreakdownString(displayText);
+            const displayText = this.useHiragana ? toHiragana(this.game.getCurrentWord().katakana) : this.game.getCurrentWord().katakana;
+            breakdown.textContent = getKanaRomajiBreakdownString(displayText);
             feedback.appendChild(breakdown);
 
             const instr = document.createElement('div');
@@ -651,52 +646,18 @@ if (typeof document !== 'undefined') {
         const ui = new UI(game);
         ui.setup();
 
-        // Expose for console access
-        window.KatakanaTrainer = {
-            game,
-            ui,
-            Game,
-            UI,
-            VOCABULARY,
-            KATAKANA_DATA,
-            getKatakanaRomajiBreakdownString,
-            getKatakanaRomajiRubyHTML,
-            getKatakanaRomajiPairs,
-            randomSubset: getRandomSubset
-        };
-        console.log('Katakana Trainer initialized. Access via `KatakanaTrainer`.');
+        console.log('Katakana Trainer initialized.');
     });
-}
-
-// Export functions for testing
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        selectRandomWords: getRandomSubset,
-        KATAKANA_DATA,
-        VOCABULARY
-    };
 }
 
 if (typeof window !== 'undefined' && window.location.href.includes('?test')) {
     console.log('=> Running tests...');
     for (const word of VOCABULARY) {
-        const pairs = getKatakanaRomajiPairs(word.katakana);
-        const isValid = pairs.every(pair => pair.romaji && pair.kana);
+        const pairs = getKanaRomajiPairs(word.katakana);
+        const isValid = pairs.every(pair => pair.romaji && pair.kana || pair.kana===" ");
         if (!isValid) {
             console.error(`Error: Bad romaji for word: ${word.katakana} = ${word.answer} with pairs = ${JSON.stringify(pairs)}`);
         }
     }
     console.log('=> Done!');
 }
-
-/*
-// Unused words for reference:
-// { katakana: 'コーヒー', answer: 'coffee' },
-// { katakana: 'ハムサンド', answer: 'ham sandwich' },
-// { katakana: 'トンカツ', answer: 'tonkatsu', alternates: ['cutlet'] },
-// { katakana: 'ヨット', answer: 'yacht' },
-// { katakana: 'ハンバーグ', answer: 'hamburg' },
-// { katakana: 'アイスコーヒー', answer: 'ice coffee', alternates: ['icecoffee', 'iced coffee'] },
-// { katakana: 'ルーター', answer: 'router' },
-// { katakana: 'ロープウェー', answer: 'ropeway', alternates: ['cable car'] },
-*/
