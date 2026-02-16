@@ -2,7 +2,13 @@
 // DATA
 // ==========================================
 
-export const VOCABULARY = [
+export interface VocabularyItem {
+    katakana: string;
+    answer: string;
+    alternates?: string[];
+}
+
+export const VOCABULARY: VocabularyItem[] = [
     { katakana: 'バットマン', answer: 'batman' },
     { katakana: 'スーパーマン', answer: 'superman' },
     { katakana: 'ピアノ', answer: 'piano' },
@@ -226,7 +232,13 @@ export const VOCABULARY = [
     { katakana: 'ジブリ', answer: 'ghibli' },
 ];
 
-export const CHARACTERS = ([
+export interface CharacterInfo {
+    romaji: string;
+    hiragana: string;
+    katakana: string;
+}
+
+export const CHARACTERS: CharacterInfo[] = ([
     ["A","あ","ア"],["I","い","イ"],["U","う","ウ"],["E","え","エ"],["O","お","オ"],
     ["KA","か","カ"],["KI","き","キ"],["KU","く","ク"],["KE","け","ケ"],["KO","こ","コ"],
     ["SA","さ","サ"],["SHI","し","シ"],["SU","す","ス"],["SE","せ","セ"],["SO","そ","ソ"],
@@ -247,11 +259,11 @@ export const CHARACTERS = ([
     ["a","ぁ","ァ"],["i","ぃ","ィ"],["u","ぅ","ゥ"],["e","ぇ","ェ"],["o","ぉ","ォ"],
     ["'","っ","ッ"],
     ["-","ー","ー"],
-]).map(arr => ({romaji: arr[0], hiragana: arr[1], katakana: arr[2]}));
+] as [string, string, string][]).map(arr => ({romaji: arr[0], hiragana: arr[1], katakana: arr[2]}));
 
-export const ROMAJI_LOOKUP = Object.fromEntries(CHARACTERS.flatMap(d => [[d.katakana, d.romaji], [d.hiragana, d.romaji]]));
-export const KATAKANA_LOOKUP = Object.fromEntries(CHARACTERS.flatMap(d => [[d.romaji, d.katakana], [d.hiragana, d.katakana]]));
-export const HIRAGANA_LOOKUP = Object.fromEntries(CHARACTERS.flatMap(d => [[d.romaji, d.hiragana], [d.katakana, d.hiragana]]));
+export const ROMAJI_LOOKUP: Record<string, string> = Object.fromEntries(CHARACTERS.flatMap(d => [[d.katakana, d.romaji], [d.hiragana, d.romaji]]));
+export const KATAKANA_LOOKUP: Record<string, string> = Object.fromEntries(CHARACTERS.flatMap(d => [[d.romaji, d.katakana], [d.hiragana, d.katakana]]));
+export const HIRAGANA_LOOKUP: Record<string, string> = Object.fromEntries(CHARACTERS.flatMap(d => [[d.romaji, d.hiragana], [d.katakana, d.hiragana]]));
 
 export const KATAKANA_GRID_STR = [
     "アイウエオ",
@@ -272,9 +284,11 @@ export const KATAKANA_GRID_STR = [
     "バビブベボ",
     "パピプペポ"
 ];
-export const KATAKANA_GRID = KATAKANA_GRID_STR.map(row => row ? row.split('').map(kana => ((kana===' ')? null : {kana: kana, romaji:ROMAJI_LOOKUP[kana]})) : [null, null, null, null, null]);
-export const HIRAGANA_GRID = KATAKANA_GRID.map(row => row.map(cell => (cell===null) ? null : {kana:HIRAGANA_LOOKUP[cell.kana], romaji:cell.romaji}))
 
+export interface GridCell {
+    kana: string;
+    romaji: string;
+}
 
-
-// ==========================================
+export const KATAKANA_GRID: (GridCell | null)[][] = KATAKANA_GRID_STR.map(row => row ? row.split('').map(kana => ((kana===' ')? null : {kana: kana, romaji:ROMAJI_LOOKUP[kana]})) : [null, null, null, null, null]);
+export const HIRAGANA_GRID: (GridCell | null)[][] = KATAKANA_GRID.map(row => row.map(cell => (cell===null) ? null : {kana:HIRAGANA_LOOKUP[cell.kana], romaji:cell.romaji}))

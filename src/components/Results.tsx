@@ -1,6 +1,12 @@
-import React from 'react';
 
-const Results = ({ score, total, cheatUseCount, onRestart }) => {
+interface ResultsProps {
+  score: number;
+  total: number;
+  cheatUseCount: number;
+  onRestart: () => void;
+}
+
+const Results: React.FC<ResultsProps> = ({ score, total, cheatUseCount, onRestart }) => {
   let message = '';
   if (cheatUseCount > 0) {
     message = `You got ${score}/${total} correct. But you used the cheat sheet ${cheatUseCount} time${cheatUseCount > 1 ? 's' : ''}!`;

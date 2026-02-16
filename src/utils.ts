@@ -1,10 +1,9 @@
-import { ROMAJI_LOOKUP, HIRAGANA_LOOKUP, VOCABULARY } from './constants';
-// ==========================================
+import { ROMAJI_LOOKUP, HIRAGANA_LOOKUP, VOCABULARY, VocabularyItem } from './constants';
 
 /**
  * Convert a katakana/romaji string to hiragana
  */
-export function toHiragana(str) {
+export function toHiragana(str: string): string {
     if (!str) return '';
 
     return str.split('').map((char, i, arr) => {
@@ -12,7 +11,7 @@ export function toHiragana(str) {
         if (char === 'ー' && i > 0) {
             const prevRomaji = ROMAJI_LOOKUP[arr[i - 1]];
             if (prevRomaji) {
-                return HIRAGANA_LOOKUP[prevRomaji.at(-1).toUpperCase()] || char;
+                return HIRAGANA_LOOKUP[prevRomaji.at(-1)!.toUpperCase()] || char;
             }
         }
         return HIRAGANA_LOOKUP[char] || char;
@@ -24,21 +23,26 @@ export function toHiragana(str) {
  * Handles digraphs like キャ → KYA
  * Handles katakana and hiragana
  */
-export function getKanaRomajiBreakdownString(kanaStr) {
+export function getKanaRomajiBreakdownString(kanaStr: string): string {
     const pairs = getKanaRomajiPairs(kanaStr);
     const parts = pairs.map(pair => `${pair.kana}(${pair.romaji})`);
     return parts.join('    ');
 }
 
-export function getKanaRomajiRubyHTML(kanaStr) {
+export function getKanaRomajiRubyHTML(kanaStr: string): string {
     const pairs = getKanaRomajiPairs(kanaStr);
     const parts = pairs.map(pair => `<ruby style="ruby-position: under;">${pair.kana}<rt>${pair.romaji}</rt></ruby>`);
     return parts.join('');
 }
 
+export interface KanaRomajiPair {
+    kana: string;
+    romaji: string;
+}
+
 /* Return [{ kana, romaji }, ...] pairs for a kana string, with digraphs handled */
-export function getKanaRomajiPairs(kanaStr) {
-    const pairs = [];
+export function getKanaRomajiPairs(kanaStr: string): KanaRomajiPair[] {
+    const pairs: KanaRomajiPair[] = [];
     if (!kanaStr) return pairs;
     const smallCombiners = ['ャ', 'ュ', 'ョ', 'ィ', 'ェ', 'ゥ', 'ァ', 'ォ'];  // not 'ッ'
     for (let i = 0; i < kanaStr.length; i++) {
@@ -61,8 +65,8 @@ export function getKanaRomajiPairs(kanaStr) {
     return pairs;
 }
 
-export function getRandomSubset(count, arr) {
-    const selected = [];
+export function getRandomSubset<T>(count: number, arr: T[]): T[] {
+    const selected: T[] = [];
     const available = [...arr];
     for (let i = 0; i < count && available.length > 0; i++) {
         const randomIndex = Math.floor(Math.random() * available.length);
@@ -72,16 +76,13 @@ export function getRandomSubset(count, arr) {
     return selected;
 }
 
-export function getWordsFromURL() {
+export function getWordsFromURL(): VocabularyItem[] | undefined {
     if (typeof window !== 'undefined') {
         const wordsParam = new window.URLSearchParams(window.location.search).get('words');
         if (wordsParam) {
-            console.log(`getWordsFromURL()::wordsParam = ${wordsParam}`);
             const indexes = wordsParam.split(',').map(s => parseInt(s));
-            console.log(`getWordsFromURL()::indexes = ${JSON.stringify(indexes)}`)
             if (indexes.every(idx => !isNaN(idx))) {
-                const words = indexes.map(idx => VOCABULARY.at(idx));
-                console.log(`getWordsFromURL()::words = ${JSON.stringify(words)}`)
+                const words = indexes.map(idx => VOCABULARY.at(idx)!);
                 if (words.length && words.every(w => typeof w?.katakana === 'string')) {
                     return words;
                 }
@@ -89,6 +90,3 @@ export function getWordsFromURL() {
         }
     }
 }
-
-
-// ==========================================

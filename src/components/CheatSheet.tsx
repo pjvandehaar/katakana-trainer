@@ -1,7 +1,13 @@
-import React from 'react';
 import { KATAKANA_GRID, HIRAGANA_GRID } from '../constants';
 
-const CheatSheet = ({ useHiragana, onStart, isModal, onClose }) => {
+interface CheatSheetProps {
+  useHiragana: boolean;
+  onStart?: () => void;
+  isModal?: boolean;
+  onClose?: () => void;
+}
+
+const CheatSheet: React.FC<CheatSheetProps> = ({ useHiragana, onStart, isModal, onClose }) => {
   const kanaData = useHiragana ? HIRAGANA_GRID : KATAKANA_GRID;
   const title = useHiragana ? (isModal ? 'Hiragana Cheat Sheet' : 'Hiragana Trainer!') : (isModal ? 'Katakana Cheat Sheet' : 'Katakana Trainer!');
 
@@ -23,8 +29,8 @@ const CheatSheet = ({ useHiragana, onStart, isModal, onClose }) => {
           if (row.length === 1) {
             return (
               <div key={idx} className="kana-cell full-width" style={{ gridColumn: '1 / -1' }}>
-                <div className="kana">{row[0].kana}</div>
-                <div className="romaji">{row[0].romaji}</div>
+                <div className="kana">{row[0]!.kana}</div>
+                <div className="romaji">{row[0]!.romaji}</div>
               </div>
             );
           } else {

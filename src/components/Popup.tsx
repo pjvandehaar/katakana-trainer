@@ -1,6 +1,9 @@
-import React from 'react';
 
-const Popup = ({ status }) => {
+interface PopupProps {
+  status: 'hidden' | 'entering' | 'exiting';
+}
+
+const Popup: React.FC<PopupProps> = ({ status }) => {
   // status can be 'hidden', 'entering', 'exiting'
   let className = '';
   if (status === 'entering') className = 'animate-in';

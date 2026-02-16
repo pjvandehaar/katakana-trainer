@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toHiragana, getKanaRomajiPairs } from './utils';
+import { toHiragana, getKanaRomajiPairs, KanaRomajiPair } from './utils';
 
 describe('toHiragana', () => {
   it('converts katakana to hiragana', () => {
@@ -16,7 +16,7 @@ describe('toHiragana', () => {
 
 describe('getKanaRomajiPairs', () => {
   it('correctly identifies pairs', () => {
-    const pairs = getKanaRomajiPairs('ピアノ');
+    const pairs: KanaRomajiPair[] = getKanaRomajiPairs('ピアノ');
     expect(pairs).toEqual([
       { kana: 'ピ', romaji: 'PI' },
       { kana: 'ア', romaji: 'A' },
@@ -25,7 +25,7 @@ describe('getKanaRomajiPairs', () => {
   });
 
   it('handles digraphs', () => {
-    const pairs = getKanaRomajiPairs('キャ');
+    const pairs: KanaRomajiPair[] = getKanaRomajiPairs('キャ');
     expect(pairs).toEqual([
       { kana: 'キャ', romaji: 'Kya' }
     ]);

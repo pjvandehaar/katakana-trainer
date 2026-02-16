@@ -1,8 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { toHiragana, getKanaRomajiRubyHTML, getKanaRomajiBreakdownString } from '../utils';
 import Flashcard from './Flashcard';
+import { VocabularyItem } from '../constants';
 
-const Quiz = ({
+interface QuizProps {
+  currentWord: VocabularyItem;
+  nextWord?: VocabularyItem;
+  currentIndex: number;
+  total: number;
+  useHiragana: boolean;
+  onSubmit: (answer: string) => { isCorrect: boolean; message?: string; showAnswer?: boolean } | undefined;
+  onShowCheatSheet: () => void;
+  animatingNext: boolean;
+}
+
+const Quiz: React.FC<QuizProps> = ({
   currentWord,
   nextWord,
   currentIndex,
@@ -15,7 +27,7 @@ const Quiz = ({
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState({ message: '', type: '', showAnswer: false });
   const [showSounds, setShowSounds] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!animatingNext) {
@@ -32,9 +44,9 @@ const Quiz = ({
     const result = onSubmit(userAnswer);
     if (result && !result.isCorrect) {
       setFeedback({
-        message: result.message,
+        message: result.message || '',
         type: 'incorrect',
-        showAnswer: result.showAnswer
+        showAnswer: !!result.showAnswer
       });
     }
   };
@@ -58,7 +70,6 @@ const Quiz = ({
         <Flashcard
           word={nextDisplayText}
           slideClass={animatingNext ? 'slide-nowhere' : 'slide-left'}
-          style={{ }}
         />
       </div>
 
@@ -81,7 +92,7 @@ const Quiz = ({
           ref={inputRef}
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+          onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
           placeholder="Type it in English and hit Enter"
           autoComplete="off"
         />

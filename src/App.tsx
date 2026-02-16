@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
-import { VOCABULARY } from './constants';
+import { VOCABULARY, VocabularyItem } from './constants';
 import { getRandomSubset, getWordsFromURL } from './utils';
 import CheatSheet from './components/CheatSheet';
 import Quiz from './components/Quiz';
@@ -8,16 +8,18 @@ import Results from './components/Results';
 import KanaToggle from './components/KanaToggle';
 import Popup from './components/Popup';
 
+type View = 'home' | 'quiz' | 'results';
+
 function App() {
-  const [view, setView] = useState('home'); // 'home', 'quiz', 'results'
+  const [view, setView] = useState<View>('home');
   const [useHiragana, setUseHiragana] = useState(false);
-  const [currentWordList, setCurrentWordList] = useState([]);
+  const [currentWordList, setCurrentWordList] = useState<VocabularyItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [cheatUseCount, setCheatUseCount] = useState(0);
   const [numWrong, setNumWrong] = useState(0);
   const [showCheatModal, setShowCheatModal] = useState(false);
-  const [popupStatus, setPopupStatus] = useState('hidden'); // 'hidden', 'entering', 'exiting'
+  const [popupStatus, setPopupStatus] = useState<'hidden' | 'entering' | 'exiting'>('hidden');
   const [animatingNext, setAnimatingNext] = useState(false);
 
   useEffect(() => {
@@ -35,8 +37,8 @@ function App() {
     setView('quiz');
   };
 
-  const handleSubmitAnswer = (userAnswer) => {
-    const clean = s => s.toLowerCase().replace(/ /g, '');
+  const handleSubmitAnswer = (userAnswer: string) => {
+    const clean = (s: string) => s.toLowerCase().replace(/ /g, '');
     const currentWord = currentWordList[currentIndex];
     const correctAnswers = [currentWord.answer, ...(currentWord.alternates || [])].map(clean);
     const isCorrect = correctAnswers.includes(clean(userAnswer));
@@ -84,7 +86,7 @@ function App() {
     }, 500); // Match popup display duration
   };
 
-  const toggleCheatModal = (show) => {
+  const toggleCheatModal = (show: boolean) => {
     if (show) setCheatUseCount(c => c + 1);
     setShowCheatModal(show);
   };
@@ -95,7 +97,7 @@ function App() {
         <CheatSheet useHiragana={useHiragana} onStart={handleStartQuiz} />
       )}
 
-      {view === 'quiz' && (
+      {view === 'quiz' && currentWordList.length > 0 && (
         <Quiz
           currentWord={currentWordList[currentIndex]}
           nextWord={currentWordList[currentIndex + 1]}

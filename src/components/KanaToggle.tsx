@@ -1,6 +1,10 @@
-import React from 'react';
 
-const KanaToggle = ({ useHiragana, onToggle }) => {
+interface KanaToggleProps {
+  useHiragana: boolean;
+  onToggle: (checked: boolean) => void;
+}
+
+const KanaToggle: React.FC<KanaToggleProps> = ({ useHiragana, onToggle }) => {
   return (
     <div className="kana-toggle">
       <input
