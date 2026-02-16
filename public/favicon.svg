@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    text {
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      font-weight: bold;
+    }
+  </style>
+  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="90" fill="#1976D2">カ</text>
+</svg>

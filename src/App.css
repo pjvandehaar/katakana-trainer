@@ -1,0 +1,500 @@
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            /* reduced padding (~20% shorter visual height) */
+            padding: 32px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* Start/Cheat Sheet View */
+        .cheat-sheet {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+            /* slightly more compact cheat sheet */
+            padding: 6px 8px;
+        }
+
+        .cheat-sheet.show {
+            display: block;
+        }
+
+        .cheat-sheet h1 {
+            text-align: center;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+            color: white;
+            padding: 15px 32px;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .start-button:active {
+            transform: translateY(0);
+        }
+
+        .kana-grid {
+            max-width: 30em;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            /* increase vertical gap for better spacing */
+            gap: 12px;
+            grid-auto-rows: 48px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .kana-cell {
+            /* flatter, less button-like; compact spacing to reduce overall grid height */
+            background: #f6fbff;
+            padding: 8px 6px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #dceffb;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 48px;
+        }
+
+        .kana-cell.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .kana-cell .kana {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+            line-height: 1;
+        }
+
+        .kana-cell .romaji {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .guide-note {
+            font-size: 14px;
+            color: #556;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .guide-note p {
+            margin-bottom: 1em;
+        }
+
+
+        /* Flashcard View */
+        .progress {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .flashcard {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: 3px solid #64B5F6;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .flashcard.slide-right {
+            transform: translateX(100vw);
+        }
+
+        .flashcard.slide-left {
+            transform: translateX(-100vw);
+            transition: none !important;
+            /* instantly to left slide */
+        }
+
+        .kana-breakdown {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Noto Sans Mono', monospace;
+            margin-top: 8px;
+            color: #333;
+            font-size: 14px;
+            white-space: pre;
+        }
+
+        .flashcard-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .flashcard-section.show {
+            display: block;
+        }
+
+        .flashcard-word {
+            font-size: 72px;
+            font-weight: bold;
+            color: #1976D2;
+            margin-bottom: 20px;
+            font-family: 'Noto Sans JP', sans-serif;
+            letter-spacing: 8px;
+        }
+
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #64B5F6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .input-section input:focus {
+            outline: none;
+            border-color: #1976D2;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+
+        .input-section button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #42A5F5 0%, #1E88E5 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-section button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .input-section button:active {
+            transform: translateY(0);
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+            min-height: 30px;
+            animation: slideIn 0.2s ease-in;
+        }
+
+        .feedback.correct {
+            background-color: #C8E6C9;
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+        }
+
+        .feedback.incorrect {
+            background-color: #FFCDD2;
+            color: #C62828;
+            border: 2px solid #F44336;
+        }
+
+        .feedback.hidden {
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cheat-button {
+            /* de-emphasized small link-like button */
+            background: transparent;
+            color: #0277bd;
+            border: none;
+            padding: 6px 8px;
+            font-size: 14px;
+            /* text-decoration: underline; */
+            cursor: pointer;
+        }
+
+        .cheat-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cheat-button:disabled {
+            color: #999;
+            background-color: lightgrey;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        /* Modal/backdrop styles for cheat sheet when opened from the quiz */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            z-index: 1000;
+        }
+
+        .modal-backdrop.show {
+            display: block;
+        }
+
+        .cheat-sheet.modal {
+            position: fixed;
+            z-index: 1001;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: min(720px, 92%);
+            max-height: 86vh;
+            overflow: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Hide the Start button when the cheat-sheet is shown as a modal */
+        .cheat-sheet.modal .start-button {
+            display: none;
+        }
+
+        .modal-close {
+            position: sticky;
+            right: 0;
+            top: 0;
+            background: white;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+            z-index: 1100;
+            padding: 4px 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            float: right;
+            margin: -16px -16px 0 0;
+            display: none;
+        }
+
+        .cheat-sheet.modal .modal-close {
+            display: block;
+        }
+
+        #popup {
+            position: fixed;
+            top: -100px;
+            /* Start off-screen */
+            left: 50vw;
+            transform: translateX(-50%) translateY(-50%) rotate(-7deg);
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 75px;
+            font-weight: bold;
+            pointer-events: none;
+            white-space: nowrap;
+            /* transition: top 0.15s cubic-bezier(.74,.38,.38,1.18), transform 0.1s; */
+            transition: none;
+        }
+
+        #popup.animate-in {
+            transition: top 0.15s cubic-bezier(.74, .38, .38, 1.18);
+            top: 44vh;
+            /* Move down into screen */
+        }
+
+        #popup.animate-out {
+            transition: left 0.3s linear;
+            left: 150vw;
+            /* Move off to the right */
+            top: 44vh;
+        }
+
+        .results {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+            text-align: center;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h2 {
+            color: #2c5aa0;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .results-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #1976D2;
+            margin-bottom: 20px;
+        }
+
+        .results-message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .restart-button {
+            background: linear-gradient(135deg, #42A5F5 0%, #1E88E5 100%);
+            color: white;
+            padding: 12px 32px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .restart-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .kana-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .kana-toggle input[type="checkbox"] {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .kana-toggle label {
+            cursor: pointer;
+            user-select: none;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                background: white;
+                align-items: flex-start;
+            }
+
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+                padding: 5px;
+            }
+
+            .progress {
+                margin-bottom: 5px;
+            }
+
+            .flashcard {
+                padding: 10px 10px;
+                margin-bottom: 10px;
+                min-height: 100px;
+            }
+
+            .flashcard .flashcard-word {
+                font-size: 32px;
+                letter-spacing: 4px;
+                margin-bottom: 0;
+            }
+
+            #popup {
+                font-size: 32px;
+            }
+
+            #popup.animate-in {
+                top: 10%;
+            }
+
+            .kana-toggle {
+                bottom: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
