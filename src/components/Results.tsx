@@ -1,4 +1,6 @@
 
+import { useEffect } from 'react';
+
 interface ResultsProps {
   score: number;
   total: number;
@@ -7,6 +9,15 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ score, total, cheatUseCount, onRestart }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        onRestart();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onRestart]);
   let message = '';
   if (cheatUseCount > 0) {
     message = `You got ${score}/${total} correct. But you used the cheat sheet ${cheatUseCount} time${cheatUseCount > 1 ? 's' : ''}!`;

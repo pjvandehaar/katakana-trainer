@@ -88,7 +88,7 @@ const Quiz: React.FC<QuizProps> = ({
         })}
       </div>
 
-      <div className={`feedback ${feedback.message ? '' : 'hidden'} ${feedback.type}`} id="feedback">
+      <div className={`feedback ${feedback.message ? 'show' : ''} ${feedback.type}`} id="feedback">
         <div>{feedback.message}</div>
         {feedback.showAnswer && (
           <>

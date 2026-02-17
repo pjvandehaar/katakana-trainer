@@ -223,29 +223,38 @@
         }
 
         .feedback {
-            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
             font-weight: bold;
             text-align: center;
-            min-height: 30px;
-            animation: slideIn 0.2s ease-in;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease, border-width 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            padding: 0 15px;
+            margin-bottom: 0;
+            border: 0px solid transparent;
+        }
+
+        .feedback.show {
+            max-height: 300px;
+            opacity: 1;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-width: 2px;
         }
 
         .feedback.correct {
             background-color: #C8E6C9;
             color: #2E7D32;
-            border: 2px solid #4CAF50;
+            border-color: #4CAF50;
+            border-style: solid;
         }
 
         .feedback.incorrect {
             background-color: #FFCDD2;
             color: #C62828;
-            border: 2px solid #F44336;
-        }
-
-        .feedback.hidden {
-            display: none;
+            border-color: #F44336;
+            border-style: solid;
         }
 
         .button-group {
