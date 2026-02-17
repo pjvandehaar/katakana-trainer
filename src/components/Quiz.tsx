@@ -4,10 +4,8 @@ import Flashcard from './Flashcard';
 import { VocabularyItem } from '../constants';
 
 interface QuizProps {
-  currentWord: VocabularyItem;
-  nextWord?: VocabularyItem;
+  currentWordList: VocabularyItem[];
   currentIndex: number;
-  total: number;
   useHiragana: boolean;
   onSubmit: (answer: string) => { isCorrect: boolean; message?: string; showAnswer?: boolean } | undefined;
   onShowCheatSheet: () => void;
@@ -15,10 +13,8 @@ interface QuizProps {
 }
 
 const Quiz: React.FC<QuizProps> = ({
-  currentWord,
-  nextWord,
+  currentWordList,
   currentIndex,
-  total,
   useHiragana,
   onSubmit,
   onShowCheatSheet,
@@ -29,22 +25,8 @@ const Quiz: React.FC<QuizProps> = ({
   const [showSounds, setShowSounds] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // We keep track of the displayed words to ensure smooth transitions
-  const [displayWord, setDisplayWord] = useState('');
-  const [nextDisplayWord, setNextDisplayWord] = useState('');
-
-  useEffect(() => {
-    const currentDisplayText = useHiragana ? toHiragana(currentWord.katakana) : currentWord.katakana;
-    const word = showSounds ? getKanaRomajiRubyHTML(currentDisplayText) : currentDisplayText;
-    setDisplayWord(word);
-
-    if (nextWord) {
-      const nextDisplayText = useHiragana ? toHiragana(nextWord.katakana) : nextWord.katakana;
-      setNextDisplayWord(nextDisplayText);
-    } else {
-      setNextDisplayWord('');
-    }
-  }, [currentWord, nextWord, useHiragana, showSounds]);
+  const total = currentWordList.length;
+  const currentWord = currentWordList[currentIndex];
 
   useEffect(() => {
     if (!animatingNext) {
@@ -68,33 +50,51 @@ const Quiz: React.FC<QuizProps> = ({
     }
   };
 
-  const currentDisplayText = useHiragana ? toHiragana(currentWord.katakana) : currentWord.katakana;
+  const getWordDisplay = (wordObj: VocabularyItem, isCurrent: boolean) => {
+    const text = useHiragana ? toHiragana(wordObj.katakana) : wordObj.katakana;
+    if (isCurrent && showSounds) {
+      return getKanaRomajiRubyHTML(text);
+    }
+    return text;
+  };
 
   return (
-    <div className="flashcard-section show" style={{ position: 'relative' }}>
+    <div className="flashcard-section show">
       <div className="progress">
         <span id="progress-text">Question {currentIndex + 1} of {total}</span>
       </div>
-      <div className="flashcard-container" style={{ position: 'relative', minHeight: '200px', marginBottom: '30px' }}>
-        <Flashcard
-          key={`current-${currentIndex}`}
-          word={displayWord}
-          slideClass={animatingNext ? 'slide-right' : 'slide-nowhere'}
-          style={{ position: 'absolute', width: '100%' }}
-        />
-        <Flashcard
-          key={`next-${currentIndex}`}
-          word={nextDisplayWord}
-          slideClass={animatingNext ? 'slide-nowhere' : 'slide-left'}
-          style={{ visibility: nextWord ? 'visible' : 'hidden' }}
-        />
+
+      <div className="flashcard-container">
+        {currentWordList.map((word, index) => {
+          // Only render current and next (and previous during animation if we wanted, but current is enough)
+          const isVisible = index === currentIndex || index === currentIndex + 1;
+          if (!isVisible) return null;
+
+          let slideClass = 'slide-nowhere';
+          if (index === currentIndex) {
+            slideClass = animatingNext ? 'slide-right' : 'slide-nowhere';
+          } else if (index === currentIndex + 1) {
+            slideClass = animatingNext ? 'slide-nowhere' : 'slide-left';
+          }
+
+          return (
+            <Flashcard
+              key={index}
+              word={getWordDisplay(word, index === currentIndex)}
+              slideClass={slideClass}
+              style={{ position: 'absolute', width: '100%' }}
+            />
+          );
+        })}
       </div>
 
       <div className={`feedback ${feedback.message ? '' : 'hidden'} ${feedback.type}`} id="feedback">
         <div>{feedback.message}</div>
         {feedback.showAnswer && (
           <>
-            <div className="kana-breakdown">{getKanaRomajiBreakdownString(currentDisplayText)}</div>
+            <div className="kana-breakdown">
+              {getKanaRomajiBreakdownString(useHiragana ? toHiragana(currentWord.katakana) : currentWord.katakana)}
+            </div>
             <div style={{ marginTop: '8px', fontSize: '0.95em' }}>
               Type "{currentWord.answer}" and press Submit to continue.
             </div>

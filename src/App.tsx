@@ -33,8 +33,8 @@ function App() {
         setShowCheatModal(false);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, true); // Use capture to be sure
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, []);
 
   const handleStartQuiz = () => {
@@ -109,10 +109,8 @@ function App() {
 
       {view === 'quiz' && currentWordList.length > 0 && (
         <Quiz
-          currentWord={currentWordList[currentIndex]}
-          nextWord={currentWordList[currentIndex + 1]}
+          currentWordList={currentWordList}
           currentIndex={currentIndex}
-          total={currentWordList.length}
           useHiragana={useHiragana}
           onSubmit={handleSubmitAnswer}
           onShowCheatSheet={() => toggleCheatModal(true)}

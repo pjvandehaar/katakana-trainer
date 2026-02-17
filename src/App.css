@@ -4,9 +4,11 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             /* reduced padding (~20% shorter visual height) */
             padding: 32px;
-            max-width: 1000px;
-            width: 100%;
+            width: 1000px;
+            max-width: 95vw;
+            margin: 0 auto;
             overflow-x: hidden;
+            box-sizing: border-box;
         }
 
         /* Start/Cheat Sheet View */
@@ -115,14 +117,17 @@
             border-radius: 12px;
             padding: 60px 20px;
             text-align: center;
-            margin-bottom: 0;
+            margin: 0;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            min-height: 200px;
+            min-height: 250px;
+            width: 100%;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease-in-out;
+            flex-shrink: 0;
         }
 
         .flashcard.slide-right {
@@ -151,6 +156,17 @@
 
         .flashcard-section.show {
             display: block;
+        }
+
+        .flashcard-container {
+            position: relative;
+            min-height: 300px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            /* overflow: hidden; */ /* Keep it visible but container is tall */
         }
 
         .flashcard-word {
@@ -466,7 +482,8 @@
             .container {
                 border-radius: 0;
                 box-shadow: none;
-                padding: 12px;
+                padding: 8px;
+                width: 100%;
                 max-width: 100%;
             }
 
@@ -475,9 +492,8 @@
             }
 
             .flashcard {
-                padding: 10px 10px;
-                margin-bottom: 10px;
-                min-height: 100px;
+                padding: 20px 10px;
+                min-height: 150px;
             }
 
             .flashcard .flashcard-word {
