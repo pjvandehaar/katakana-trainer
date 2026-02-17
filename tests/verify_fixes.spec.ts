@@ -56,6 +56,6 @@ test('verify katakana trainer functionality and new fixes', async ({ page }) => 
   // Should be back at start or quiz (depending on if it restarts immediately)
   // handleStartQuiz sets view to 'quiz'
   await page.waitForSelector('.flashcard-section');
-  await expect(page.locator('.progress')).toBeVisible();
+  await expect(page.locator('.progress-container')).toBeVisible();
   await page.screenshot({ path: 'screenshots/restarted_quiz.png' });
 });

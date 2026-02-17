@@ -22,6 +22,7 @@ const Quiz: React.FC<QuizProps> = ({
 }) => {
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState({ message: '', type: '', showAnswer: false });
+  const [showFeedback, setShowFeedback] = useState(false);
   const [showSounds, setShowSounds] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +30,9 @@ const Quiz: React.FC<QuizProps> = ({
   const currentWord = currentWordList[currentIndex];
 
   useEffect(() => {
-    if (!animatingNext) {
+    if (animatingNext) {
+      setShowFeedback(false);
+    } else {
       if (inputRef.current) {
         inputRef.current.focus();
       }
@@ -47,6 +50,7 @@ const Quiz: React.FC<QuizProps> = ({
         type: 'incorrect',
         showAnswer: !!result.showAnswer
       });
+      setShowFeedback(true);
     }
   };
 
@@ -60,8 +64,24 @@ const Quiz: React.FC<QuizProps> = ({
 
   return (
     <div className="flashcard-section show">
-      <div className="progress">
-        <span id="progress-text">Question {currentIndex + 1} of {total}</span>
+      <div className="progress-container">
+        {currentWordList.map((_, index) => {
+          const isVisible = index === currentIndex || index === currentIndex + 1;
+          if (!isVisible) return null;
+
+          let slideClass = 'slide-nowhere';
+          if (index === currentIndex) {
+            slideClass = animatingNext ? 'slide-right' : 'slide-nowhere';
+          } else if (index === currentIndex + 1) {
+            slideClass = animatingNext ? 'slide-nowhere' : 'slide-left';
+          }
+
+          return (
+            <div key={index} className={`progress ${slideClass}`}>
+              Question {index + 1} of {total}
+            </div>
+          );
+        })}
       </div>
 
       <div className="flashcard-container">
@@ -88,7 +108,7 @@ const Quiz: React.FC<QuizProps> = ({
         })}
       </div>
 
-      <div className={`feedback ${feedback.message ? 'show' : ''} ${feedback.type}`} id="feedback">
+      <div className={`feedback ${showFeedback ? 'show' : ''} ${feedback.type}`} id="feedback">
         <div>{feedback.message}</div>
         {feedback.showAnswer && (
           <>
