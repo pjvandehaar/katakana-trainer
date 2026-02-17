@@ -27,6 +27,16 @@ function App() {
     document.title = title;
   }, [useHiragana]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowCheatModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleStartQuiz = () => {
     const words = getWordsFromURL() || getRandomSubset(10, VOCABULARY);
     setCurrentWordList(words);

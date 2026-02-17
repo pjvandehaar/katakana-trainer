@@ -29,6 +29,23 @@ const Quiz: React.FC<QuizProps> = ({
   const [showSounds, setShowSounds] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // We keep track of the displayed words to ensure smooth transitions
+  const [displayWord, setDisplayWord] = useState('');
+  const [nextDisplayWord, setNextDisplayWord] = useState('');
+
+  useEffect(() => {
+    const currentDisplayText = useHiragana ? toHiragana(currentWord.katakana) : currentWord.katakana;
+    const word = showSounds ? getKanaRomajiRubyHTML(currentDisplayText) : currentDisplayText;
+    setDisplayWord(word);
+
+    if (nextWord) {
+      const nextDisplayText = useHiragana ? toHiragana(nextWord.katakana) : nextWord.katakana;
+      setNextDisplayWord(nextDisplayText);
+    } else {
+      setNextDisplayWord('');
+    }
+  }, [currentWord, nextWord, useHiragana, showSounds]);
+
   useEffect(() => {
     if (!animatingNext) {
       if (inputRef.current) {
@@ -38,7 +55,7 @@ const Quiz: React.FC<QuizProps> = ({
       setUserAnswer('');
       setShowSounds(false);
     }
-  }, [currentWord, animatingNext]);
+  }, [currentIndex, animatingNext]);
 
   const handleSubmit = () => {
     const result = onSubmit(userAnswer);
@@ -52,24 +69,24 @@ const Quiz: React.FC<QuizProps> = ({
   };
 
   const currentDisplayText = useHiragana ? toHiragana(currentWord.katakana) : currentWord.katakana;
-  const displayWord = showSounds ? getKanaRomajiRubyHTML(currentDisplayText) : currentDisplayText;
-
-  const nextDisplayText = nextWord ? (useHiragana ? toHiragana(nextWord.katakana) : nextWord.katakana) : '';
 
   return (
     <div className="flashcard-section show" style={{ position: 'relative' }}>
       <div className="progress">
         <span id="progress-text">Question {currentIndex + 1} of {total}</span>
       </div>
-      <div style={{ position: 'relative', minHeight: '200px', marginBottom: '30px' }}>
+      <div className="flashcard-container" style={{ position: 'relative', minHeight: '200px', marginBottom: '30px' }}>
         <Flashcard
+          key={`current-${currentIndex}`}
           word={displayWord}
           slideClass={animatingNext ? 'slide-right' : 'slide-nowhere'}
           style={{ position: 'absolute', width: '100%' }}
         />
         <Flashcard
-          word={nextDisplayText}
+          key={`next-${currentIndex}`}
+          word={nextDisplayWord}
           slideClass={animatingNext ? 'slide-nowhere' : 'slide-left'}
+          style={{ visibility: nextWord ? 'visible' : 'hidden' }}
         />
       </div>
 
