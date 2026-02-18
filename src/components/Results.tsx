@@ -6,9 +6,10 @@ interface ResultsProps {
   total: number;
   cheatUseCount: number;
   onRestart: () => void;
+  onBackToHome: () => void;
 }
 
-const Results: React.FC<ResultsProps> = ({ score, total, cheatUseCount, onRestart }) => {
+const Results: React.FC<ResultsProps> = ({ score, total, cheatUseCount, onRestart, onBackToHome }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -40,7 +41,10 @@ const Results: React.FC<ResultsProps> = ({ score, total, cheatUseCount, onRestar
       <h2>Finished!</h2>
       <div className="results-score" id="results-score">{score}/{total}</div>
       <div className="results-message" id="results-message">{message}</div>
-      <button className="restart-button" id="restart-btn" onClick={onRestart}>Try Again</button>
+      <div className="results-buttons">
+        <button className="restart-button" id="restart-btn" onClick={onRestart}>Repeat</button>
+        <button className="home-button" id="home-btn" onClick={onBackToHome}>Back to Home Page</button>
+      </div>
     </div>
   );
 };

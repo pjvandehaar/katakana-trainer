@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { VOCABULARY, VocabularyItem } from './constants';
+import { VOCABULARY, VocabularyItem, QuizSettings, KANA_GROUPS, ROMAJI_LOOKUP } from './constants';
 import { getRandomSubset, getWordsFromURL } from './utils';
+import Home from './components/Home';
 import CheatSheet from './components/CheatSheet';
 import Quiz from './components/Quiz';
 import Results from './components/Results';
-import KanaToggle from './components/KanaToggle';
 import Popup from './components/Popup';
 
 type View = 'home' | 'quiz' | 'results';
 
 function App() {
   const [view, setView] = useState<View>('home');
-  const [useHiragana, setUseHiragana] = useState(false);
+  const [settings, setSettings] = useState<QuizSettings>({
+    useHiragana: false,
+    selectedGroups: KANA_GROUPS.map(g => g.id),
+    testMode: 'both',
+  });
   const [currentWordList, setCurrentWordList] = useState<VocabularyItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -23,9 +27,9 @@ function App() {
   const [animatingNext, setAnimatingNext] = useState(false);
 
   useEffect(() => {
-    const title = useHiragana ? 'Hiragana Trainer' : 'Katakana Trainer';
+    const title = settings.useHiragana ? 'Hiragana Trainer' : 'Katakana Trainer';
     document.title = title;
-  }, [useHiragana]);
+  }, [settings.useHiragana]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,8 +42,67 @@ function App() {
   }, []);
 
   const handleStartQuiz = () => {
-    const words = getWordsFromURL() || getRandomSubset(10, VOCABULARY);
-    setCurrentWordList(words);
+    const fromURL = getWordsFromURL();
+    if (fromURL) {
+      setCurrentWordList(fromURL);
+    } else {
+      const selectedKanaArr = settings.selectedGroups.flatMap(groupId =>
+        KANA_GROUPS.find(g => g.id === groupId)?.kana || []
+      );
+      const selectedKana = new Set(selectedKanaArr);
+
+      let finalWords: VocabularyItem[] = [];
+
+      if (settings.testMode === 'kana') {
+        finalWords = Array.from(selectedKana).map(k => ({
+          katakana: k,
+          answer: ROMAJI_LOOKUP[k] || k,
+        }));
+      } else {
+        let wordsPool = VOCABULARY.filter(item =>
+          item.katakana.split('').every(char => selectedKana.has(char))
+        );
+
+        if (settings.testMode === 'words') {
+          if (wordsPool.length === 0) {
+            alert("No words found for these kana. Switching to 'Both' mode.");
+            const kanaInWords = new Set(wordsPool.flatMap(w => w.katakana.split('')));
+            const missingKana = Array.from(selectedKana).filter(k => !kanaInWords.has(k));
+            const missingPool = missingKana.map(k => ({
+              katakana: k,
+              answer: ROMAJI_LOOKUP[k] || k,
+            }));
+            finalWords = getRandomSubset(10, [...wordsPool, ...missingPool]);
+          } else {
+            finalWords = getRandomSubset(10, wordsPool);
+          }
+        } else {
+          // Both mode
+          const kanaInWords = new Set(wordsPool.flatMap(w => w.katakana.split('')));
+          const missingKana = Array.from(selectedKana).filter(k => !kanaInWords.has(k));
+          const missingPool = missingKana.map(k => ({
+            katakana: k,
+            answer: ROMAJI_LOOKUP[k] || k,
+          }));
+          finalWords = getRandomSubset(10, [...wordsPool, ...missingPool]);
+        }
+
+        // Padding logic for words and both
+        if (finalWords.length < 10 && selectedKanaArr.length > 0) {
+          const needed = 10 - finalWords.length;
+          for (let i = 0; i < needed; i++) {
+            const randomKana = selectedKanaArr[Math.floor(Math.random() * selectedKanaArr.length)];
+            finalWords.push({
+              katakana: randomKana,
+              answer: ROMAJI_LOOKUP[randomKana] || randomKana
+            });
+          }
+        }
+      }
+
+      setCurrentWordList(finalWords);
+    }
+
     setCurrentIndex(0);
     setScore(0);
     setCheatUseCount(0);
@@ -105,14 +168,18 @@ function App() {
   return (
     <div className="container">
       {view === 'home' && (
-        <CheatSheet useHiragana={useHiragana} onStart={handleStartQuiz} />
+        <Home
+          settings={settings}
+          onSettingsChange={setSettings}
+          onStart={handleStartQuiz}
+        />
       )}
 
       {view === 'quiz' && currentWordList.length > 0 && (
         <Quiz
           currentWordList={currentWordList}
           currentIndex={currentIndex}
-          useHiragana={useHiragana}
+          useHiragana={settings.useHiragana}
           onSubmit={handleSubmitAnswer}
           onShowCheatSheet={() => toggleCheatModal(true)}
           animatingNext={animatingNext}
@@ -125,6 +192,7 @@ function App() {
           total={currentWordList.length}
           cheatUseCount={cheatUseCount}
           onRestart={handleStartQuiz}
+          onBackToHome={() => setView('home')}
         />
       )}
 
@@ -132,7 +200,7 @@ function App() {
         <>
           <div className="modal-backdrop show" onClick={() => toggleCheatModal(false)}></div>
           <CheatSheet
-            useHiragana={useHiragana}
+            useHiragana={settings.useHiragana}
             isModal={true}
             onClose={() => toggleCheatModal(false)}
           />
@@ -140,8 +208,6 @@ function App() {
       )}
 
       <Popup status={popupStatus} />
-
-      <KanaToggle useHiragana={useHiragana} onToggle={setUseHiragana} />
     </div>
   );
 }

@@ -292,3 +292,39 @@ export interface GridCell {
 
 export const KATAKANA_GRID: (GridCell | null)[][] = KATAKANA_GRID_STR.map(row => row ? row.split('').map(kana => ((kana===' ')? null : {kana: kana, romaji:ROMAJI_LOOKUP[kana]})) : [null, null, null, null, null]);
 export const HIRAGANA_GRID: (GridCell | null)[][] = KATAKANA_GRID.map(row => row.map(cell => (cell===null) ? null : {kana:HIRAGANA_LOOKUP[cell.kana], romaji:cell.romaji}))
+
+export interface KanaGroup {
+    id: string;
+    name: string;
+    kana: string[];
+}
+
+export const KANA_GROUPS: KanaGroup[] = [
+    { id: 'a', name: 'a', kana: ['ア', 'イ', 'ウ', 'エ', 'オ'] },
+    { id: 'ka', name: 'ka', kana: ['カ', 'キ', 'ク', 'ケ', 'コ'] },
+    { id: 'sa', name: 'sa', kana: ['サ', 'シ', 'ス', 'セ', 'ソ'] },
+    { id: 'ta', name: 'ta', kana: ['タ', 'チ', 'ツ', 'テ', 'ト'] },
+    { id: 'na', name: 'na', kana: ['ナ', 'ニ', 'ヌ', 'ネ', 'ノ'] },
+    { id: 'ha', name: 'ha', kana: ['ハ', 'ヒ', 'フ', 'ヘ', 'ホ'] },
+    { id: 'ma', name: 'ma', kana: ['マ', 'ミ', 'ム', 'メ', 'モ'] },
+    { id: 'ya', name: 'ya', kana: ['ヤ', 'ユ', 'ヨ'] },
+    { id: 'ra', name: 'ra', kana: ['ラ', 'リ', 'ル', 'レ', 'ロ'] },
+    { id: 'wa', name: 'wa', kana: ['ワ', 'ヲ'] },
+    { id: 'n', name: 'n', kana: ['ン'] },
+    { id: 'others', name: 'curiosities', kana: [
+        'ガ', 'ギ', 'グ', 'ゲ', 'ゴ',
+        'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ',
+        'ダ', 'ヂ', 'ヅ', 'デ', 'ド',
+        'バ', 'ビ', 'ブ', 'ベ', 'ボ',
+        'パ', 'ピ', 'プ', 'ペ', 'ポ',
+        'ッ', 'ー', 'ァ', 'ィ', 'ゥ', 'ェ', 'ォ', 'ャ', 'ュ', 'ョ'
+    ] }
+];
+
+export type TestMode = 'words' | 'kana' | 'both';
+
+export interface QuizSettings {
+    useHiragana: boolean;
+    selectedGroups: string[];
+    testMode: TestMode;
+}
