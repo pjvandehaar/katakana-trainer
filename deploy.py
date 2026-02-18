@@ -15,20 +15,7 @@ def main():
     parser.add_argument("--scp", action="store_true", help="Deploy the file using scp.")
     args = parser.parse_args()
 
-    print('=> Making /docs/ ...')
-    if Path('./docs').is_dir(): run_cmd(['rm', '-r', './docs/'])
-    run_cmd(['npx', 'vite', 'build', '--base=./', '--outDir=docs/'])
-    print()
-    # A. Make /docs/index.html etc for github-pages
-    # if Path('./docs').is_dir(): run_cmd(['rm', '-r', './docs/'])
-    # run_cmd(['cp', '-r', './dist', './docs'])
-    # html_content = Path('docs/index.html').read_text()
-    # html_content = re.sub('href="/', 'href="./"', html_content)
-    # html_content = re.sub('src="/', 'src="./"', html_content)
-    # Path('docs/index.html').write_text(html_content)
-    # print("=> Made paths relative in docs/index.html")
-
-    print("=> Making 1.html ...")
+    print("=> Making docs/index.html ...")
     dist_dir = Path('dist')
     assets_dir = dist_dir / 'assets'
 
@@ -73,12 +60,13 @@ def main():
         )
 
     # Save as 1.html
-    Path('1.html').write_text(html_content)
-    print("Created 1.html successfully.")
+    Path('docs').mkdir(exist_ok=True)
+    Path('docs/index.html').write_text(html_content)
+    print("Created docs/index.html successfully.")
 
     # Optionally scp
     if args.scp:
-        run_cmd(['scp', '1.html', 'petervh:/var/www/html/tmp/katakana-trainer/index.html'])
+        run_cmd(['scp', 'docs/index.html', 'petervh:/var/www/html/tmp/katakana-trainer/index.html'])
     else:
         print('=> Not deploying.  Pass --scp to actually deploy.')
 
