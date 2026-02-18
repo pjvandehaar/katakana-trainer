@@ -11,21 +11,32 @@ def run_cmd(cmd: list[str]) -> None:
     subp.run(cmd, check=True)
 
 def main():
-    parser = argparse.ArgumentParser(description="Build and deploy the Katakana Trainer.")
+    parser = argparse.ArgumentParser(description="Build and deploy the Katakana Trainer to petervh.com and to github-pages.")
     parser.add_argument("--scp", action="store_true", help="Deploy the file using scp.")
     args = parser.parse_args()
 
-    # 1. Run the build
-    print("Building the project...")
-    run_cmd(['npm', 'run', 'build'])
+    print('=> Making /docs/ ...')
+    if Path('./docs').is_dir(): run_cmd(['rm', '-r', './docs/'])
+    run_cmd(['npx', 'vite', 'build', '--base=./', '--outDir=docs/'])
+    print()
+    # A. Make /docs/index.html etc for github-pages
+    # if Path('./docs').is_dir(): run_cmd(['rm', '-r', './docs/'])
+    # run_cmd(['cp', '-r', './dist', './docs'])
+    # html_content = Path('docs/index.html').read_text()
+    # html_content = re.sub('href="/', 'href="./"', html_content)
+    # html_content = re.sub('src="/', 'src="./"', html_content)
+    # Path('docs/index.html').write_text(html_content)
+    # print("=> Made paths relative in docs/index.html")
 
+    print("=> Making 1.html ...")
     dist_dir = Path('dist')
     assets_dir = dist_dir / 'assets'
 
-    # 2. Read the built index.html
+    print("Building the project...")
+    run_cmd(['npm', 'run', 'build'])
     html_content = (dist_dir / 'index.html').read_text()
 
-    # 3. Find and inline CSS
+    # Find and inline CSS
     css_files = list(assets_dir.glob('*.css'))
     if css_files:
         assert len(css_files) == 1, css_files
@@ -37,7 +48,7 @@ def main():
             html_content
         )
 
-    # 4. Find and inline JS
+    # Find and inline JS
     js_files = list(assets_dir.glob('*.js'))
     if js_files:
         assert len(js_files) == 1, js_files
@@ -49,7 +60,7 @@ def main():
             html_content
         )
 
-    # 5. Inline Favicon (SVG to Data URI)
+    # Inline Favicon (SVG to Data URI)
     favicon_path = dist_dir / 'favicon.svg'
     if favicon_path.exists():
         svg_content = favicon_path.read_text()
@@ -61,11 +72,11 @@ def main():
             html_content
         )
 
-    # 6. Save as 1.html
+    # Save as 1.html
     Path('1.html').write_text(html_content)
     print("Created 1.html successfully.")
 
-    # 7. Optionally scp
+    # Optionally scp
     if args.scp:
         run_cmd(['scp', '1.html', 'petervh:/var/www/html/tmp/katakana-trainer/index.html'])
     else:
