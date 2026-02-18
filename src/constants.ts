@@ -311,7 +311,7 @@ export const KANA_GROUPS: KanaGroup[] = [
     { id: 'ra', name: 'ra', kana: ['ラ', 'リ', 'ル', 'レ', 'ロ'] },
     { id: 'wa', name: 'wa', kana: ['ワ', 'ヲ'] },
     { id: 'n', name: 'n', kana: ['ン'] },
-    { id: 'others', name: 'others', kana: [
+    { id: 'others', name: 'curiosities', kana: [
         'ガ', 'ギ', 'グ', 'ゲ', 'ゴ',
         'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ',
         'ダ', 'ヂ', 'ヅ', 'デ', 'ド',

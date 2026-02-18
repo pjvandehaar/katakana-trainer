@@ -561,7 +561,8 @@
 }
 
 .group-button.selected:hover {
-    top: 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    top: -2px;
 }
 
 .group-name {

@@ -46,39 +46,59 @@ function App() {
     if (fromURL) {
       setCurrentWordList(fromURL);
     } else {
-      const selectedKana = new Set(
-        settings.selectedGroups.flatMap(groupId =>
-          KANA_GROUPS.find(g => g.id === groupId)?.kana || []
-        )
+      const selectedKanaArr = settings.selectedGroups.flatMap(groupId =>
+        KANA_GROUPS.find(g => g.id === groupId)?.kana || []
       );
+      const selectedKana = new Set(selectedKanaArr);
 
-      let pool: VocabularyItem[] = [];
-
-      if (settings.testMode === 'words' || settings.testMode === 'both') {
-        pool = VOCABULARY.filter(item =>
-          item.katakana.split('').every(char => selectedKana.has(char))
-        );
-      }
+      let finalWords: VocabularyItem[] = [];
 
       if (settings.testMode === 'kana') {
-        pool = Array.from(selectedKana).map(k => ({
+        finalWords = Array.from(selectedKana).map(k => ({
           katakana: k,
           answer: ROMAJI_LOOKUP[k] || k,
         }));
-      } else if (settings.testMode === 'both') {
-        const wordsPool = [...pool];
-        const kanaInWords = new Set(wordsPool.flatMap(w => w.katakana.split('')));
-        const missingKana = Array.from(selectedKana).filter(k => !kanaInWords.has(k));
-        const missingPool = missingKana.map(k => ({
-          katakana: k,
-          answer: ROMAJI_LOOKUP[k] || k,
-        }));
-        pool = [...wordsPool, ...missingPool];
-      }
+      } else {
+        let wordsPool = VOCABULARY.filter(item =>
+          item.katakana.split('').every(char => selectedKana.has(char))
+        );
 
-      const finalWords = settings.testMode === 'kana'
-        ? pool
-        : getRandomSubset(10, pool);
+        if (settings.testMode === 'words') {
+          if (wordsPool.length === 0) {
+            alert("No words found for these kana. Switching to 'Both' mode.");
+            const kanaInWords = new Set(wordsPool.flatMap(w => w.katakana.split('')));
+            const missingKana = Array.from(selectedKana).filter(k => !kanaInWords.has(k));
+            const missingPool = missingKana.map(k => ({
+              katakana: k,
+              answer: ROMAJI_LOOKUP[k] || k,
+            }));
+            finalWords = getRandomSubset(10, [...wordsPool, ...missingPool]);
+          } else {
+            finalWords = getRandomSubset(10, wordsPool);
+          }
+        } else {
+          // Both mode
+          const kanaInWords = new Set(wordsPool.flatMap(w => w.katakana.split('')));
+          const missingKana = Array.from(selectedKana).filter(k => !kanaInWords.has(k));
+          const missingPool = missingKana.map(k => ({
+            katakana: k,
+            answer: ROMAJI_LOOKUP[k] || k,
+          }));
+          finalWords = getRandomSubset(10, [...wordsPool, ...missingPool]);
+        }
+
+        // Padding logic for words and both
+        if (finalWords.length < 10 && selectedKanaArr.length > 0) {
+          const needed = 10 - finalWords.length;
+          for (let i = 0; i < needed; i++) {
+            const randomKana = selectedKanaArr[Math.floor(Math.random() * selectedKanaArr.length)];
+            finalWords.push({
+              katakana: randomKana,
+              answer: ROMAJI_LOOKUP[randomKana] || randomKana
+            });
+          }
+        }
+      }
 
       setCurrentWordList(finalWords);
     }

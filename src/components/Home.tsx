@@ -1,5 +1,6 @@
-import React from 'react';
-import { KANA_GROUPS, QuizSettings, TestMode, HIRAGANA_LOOKUP, ROMAJI_LOOKUP } from '../constants';
+import React, { useMemo } from 'react';
+import { KANA_GROUPS, QuizSettings, TestMode, VOCABULARY } from '../constants';
+import { toHiragana, getKanaRomajiPairs } from '../utils';
 
 interface HomeProps {
   settings: QuizSettings;
@@ -24,10 +25,20 @@ const Home: React.FC<HomeProps> = ({ settings, onSettingsChange, onStart }) => {
   };
 
   const getOthersVariety = () => {
-    // Variety: Ga, ji, sha, fo, kya, little tsu
-    // Looking up based on Katakana equivalents in our constants
-    return ['ガ', 'ジ', 'シャ', 'フォ', 'キャ', 'ッ'];
+    // Variety: Ga, sha, fo, kya, little tsu
+    return ['ガ', 'シャ', 'フォ', 'キャ', 'ッ'];
   };
+
+  const wordCount = useMemo(() => {
+    const selectedKana = new Set(
+      settings.selectedGroups.flatMap(groupId =>
+        KANA_GROUPS.find(g => g.id === groupId)?.kana || []
+      )
+    );
+    return VOCABULARY.filter(item =>
+      item.katakana.split('').every(char => selectedKana.has(char))
+    ).length;
+  }, [settings.selectedGroups]);
 
   return (
     <div className="home-screen show">
@@ -58,21 +69,17 @@ const Home: React.FC<HomeProps> = ({ settings, onSettingsChange, onStart }) => {
                 <div className="group-name">{group.name.toUpperCase()}</div>
                 <div className="group-kana-row">
                   {displayKanaList.map((k, i) => {
-                    // Manual lookup for digraphs if needed, though constants.ts handles single chars
-                    // ROMAJI_LOOKUP works for single chars. For digraphs like 'シャ' we might need to handle them.
-                    // Actually ROMAJI_LOOKUP is build from CHARACTERS which has some digraphs but not all.
-                    // 'シャ' is 'SH' + 'YA' -> 'SHA'.
-                    // In constants.ts, digraphs aren't explicitly listed in CHARACTERS as single entries usually.
-                    // But let's see what ROMAJI_LOOKUP has.
-                    const displayKana = settings.useHiragana ? (HIRAGANA_LOOKUP[k] || k) : k;
-                    const romaji = ROMAJI_LOOKUP[k] || (k === 'シャ' ? 'SHA' : k === 'フォ' ? 'FO' : k === 'キャ' ? 'KYA' : '');
-
-                    return (
-                      <div key={i} className="group-kana-item">
-                        <div className="k">{displayKana}</div>
-                        <div className="r">{romaji}</div>
-                      </div>
-                    );
+                    const pairs = getKanaRomajiPairs(k);
+                    // For variety items like 'シャ', pairs will have one item with kana 'シャ' and romaji 'SHA'
+                    return pairs.map((pair, j) => {
+                      const displayKana = settings.useHiragana ? toHiragana(pair.kana) : pair.kana;
+                      return (
+                        <div key={`${i}-${j}`} className="group-kana-item">
+                          <div className="k">{displayKana}</div>
+                          <div className="r">{pair.romaji.toUpperCase()}</div>
+                        </div>
+                      );
+                    });
                   })}
                   {group.kana.length > displayKanaList.length && <div className="group-kana-item more">...</div>}
                 </div>
@@ -89,7 +96,7 @@ const Home: React.FC<HomeProps> = ({ settings, onSettingsChange, onStart }) => {
               className={`mode-part kana-part ${settings.testMode === 'kana' ? 'selected' : ''}`}
               onClick={() => setTestMode('kana')}
             >
-              Kana
+              {settings.useHiragana ? 'Hiragana' : 'Katakana'}
             </button>
             <button
               className={`mode-part both-part ${settings.testMode === 'both' ? 'selected' : ''}`}
@@ -101,7 +108,7 @@ const Home: React.FC<HomeProps> = ({ settings, onSettingsChange, onStart }) => {
               className={`mode-part words-part ${settings.testMode === 'words' ? 'selected' : ''}`}
               onClick={() => setTestMode('words')}
             >
-              Words
+              Words ({wordCount})
             </button>
           </div>
         </div>
